@@ -1,0 +1,27 @@
+# Dependencies
+/vendor/
+composer.phar
+
+# Environment secrets
+.env
+
+# Storage and temporary files
+/storage/logs/*.log
+/storage/cache/*
+/storage/invoices/*
+!/storage/logs/.gitkeep
+!/storage/cache/.gitkeep
+!/storage/invoices/.gitkeep
+
+# Uploads
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo

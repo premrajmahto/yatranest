@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /my-bookings
+Disallow: /booking/checkout
+Disallow: /profile
+
+Sitemap: http://localhost:8000/sitemap.xml

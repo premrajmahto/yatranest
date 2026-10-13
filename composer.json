@@ -1,0 +1,20 @@
+{
+    "name": "yatranest/travel-booking",
+    "description": "Tour & Travel Booking System",
+    "type": "project",
+    "authors": [
+        {
+            "name": "YatraNest",
+            "email": "admin@yatranest.local"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.1",
+        "razorpay/razorpay": "^2.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
