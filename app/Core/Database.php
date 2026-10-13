@@ -11,6 +11,24 @@ class Database {
     public static function getConnection(): PDO {
         if (self::$instance === null) {
             $config = config('database');
+
+            // SQLite connection
+            if (($config['connection'] ?? 'mysql') === 'sqlite') {
+                $dbPath = $config['database'];
+                if (!str_starts_with($dbPath, '/') && !preg_match('/^[a-zA-Z]:/', $dbPath)) {
+                    $dbPath = dirname(__DIR__, 2) . '/' . $dbPath;
+                }
+                if (!file_exists($dbPath)) {
+                    @mkdir(dirname($dbPath), 0777, true);
+                    touch($dbPath);
+                }
+                self::$instance = new PDO("sqlite:" . $dbPath);
+                self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                self::$instance->sqliteCreateFunction('NOW', fn() => date('Y-m-d H:i:s'));
+                return self::$instance;
+            }
+
             $dsn = sprintf(
                 "mysql:host=%s;port=%d;dbname=%s;charset=%s",
                 $config['host'],

@@ -28,7 +28,68 @@ class SetupHandler {
         $postError = null;
         $manualEnvSnippet = null;
 
-        // Process POST setup form
+        // Process Instant SQLite Launch (Zero Configuration)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['launch_sqlite'])) {
+            try {
+                $sqliteDir = $basePath . '/storage';
+                if (!is_dir($sqliteDir)) {
+                    @mkdir($sqliteDir, 0777, true);
+                }
+                $sqliteFile = $sqliteDir . '/database.sqlite';
+                $sqlitePdo = new PDO('sqlite:' . $sqliteFile);
+                $sqlitePdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sqlitePdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
+                SqliteSeeder::seed($sqlitePdo);
+
+                $secret = bin2hex(random_bytes(16));
+                $envContent = <<<ENV
+APP_NAME="YatraNest - Tour & Travel Booking"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL="{$appUrl}"
+APP_SECRET="{$secret}"
+
+# Database Configuration (Portable SQLite)
+DB_CONNECTION=sqlite
+DB_DATABASE="storage/database.sqlite"
+
+# Payment Gateway (Razorpay Test Mode)
+RAZORPAY_KEY_ID=rzp_test_sampleKey12345
+RAZORPAY_KEY_SECRET=rzp_test_secretSample67890
+RAZORPAY_WEBHOOK_SECRET=whsec_sampleRazorpayWebhookSecret
+RAZORPAY_MODE=test
+
+# Email Configuration
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=no-reply@yatranest.com
+MAIL_FROM_NAME="YatraNest Holidays"
+
+# Session & Booking
+SESSION_LIFETIME=7200
+DEFAULT_CURRENCY=INR
+CURRENCY_SYMBOL="₹"
+HOLD_EXPIRATION_MINUTES=15
+ENV;
+
+                $written = @file_put_contents($envFile, $envContent);
+
+                if ($written !== false) {
+                    self::renderSuccessView($appUrl);
+                    exit;
+                } else {
+                    $manualEnvSnippet = $envContent;
+                }
+            } catch (\Throwable $ex) {
+                $postError = "SQLite Initialization Failed: " . $ex->getMessage();
+            }
+        }
+
+        // Process POST setup form (MySQL)
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setup_db'])) {
             $dbHost = trim((string)($_POST['db_host'] ?? 'localhost'));
             $dbPort = (int)($_POST['db_port'] ?? 3306);
@@ -216,6 +277,35 @@ ENV;
                         <i class="bi bi-x-circle-fill me-1"></i> <?= htmlspecialchars($postError) ?>
                     </div>
                     <?php endif; ?>
+
+                    <!-- 1-Click Instant Launch Option -->
+                    <div class="card border-0 mb-4 text-white p-4 rounded-4 shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+                        <div class="row align-items-center g-3">
+                            <div class="col-md-7">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge bg-warning text-dark fw-bold text-uppercase px-2 py-1">Fastest Option</span>
+                                    <h5 class="fw-bold mb-0 text-white">Instant 1-Click Launch</h5>
+                                </div>
+                                <p class="small mb-0 text-white opacity-90">
+                                    Don't want to create a MySQL database in Hostinger right now? Click to initialize YatraNest instantly. All tour packages, bookings, and admin dashboard work immediately!
+                                </p>
+                            </div>
+                            <div class="col-md-5 text-md-end">
+                                <form method="POST" class="m-0">
+                                    <input type="hidden" name="launch_sqlite" value="1">
+                                    <button type="submit" class="btn btn-warning btn-lg fw-bold rounded-pill px-4 shadow py-2 text-dark">
+                                        <i class="bi bi-lightning-charge-fill me-1"></i> Launch Website Now
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center my-4">
+                        <hr class="flex-grow-1 my-0">
+                        <span class="px-3 text-muted small fw-semibold text-uppercase bg-white">OR CONNECT HOSTINGER MYSQL BELOW</span>
+                        <hr class="flex-grow-1 my-0">
+                    </div>
 
                     <div class="row g-4">
                         <!-- Form Section -->
