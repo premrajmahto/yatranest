@@ -11,6 +11,22 @@ if (!function_exists('app')) {
     }
 }
 
+if (!function_exists('env')) {
+    function env(string $key, mixed $default = null): mixed {
+        $val = getenv($key);
+        if ($val !== false && $val !== '') {
+            return $val;
+        }
+        if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
+            return $_ENV[$key];
+        }
+        if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
+            return $_SERVER[$key];
+        }
+        return $default;
+    }
+}
+
 if (!function_exists('config')) {
     function config(string $key, mixed $default = null): mixed {
         return app()->getConfig($key, $default);

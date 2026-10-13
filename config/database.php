@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'host' => $_ENV['DB_HOST'] ?? '127.0.0.1',
-    'port' => (int)($_ENV['DB_PORT'] ?? 3306),
-    'database' => $_ENV['DB_NAME'] ?? 'yatranest_db',
-    'username' => $_ENV['DB_USER'] ?? 'root',
-    'password' => $_ENV['DB_PASS'] ?? '',
+    'host' => env('DB_HOST', '127.0.0.1'),
+    'port' => (int)env('DB_PORT', 3306),
+    'database' => env('DB_NAME', 'yatranest_db'),
+    'username' => env('DB_USER', 'root'),
+    'password' => env('DB_PASS', ''),
     'charset' => 'utf8mb4',
     'options' => [
         \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,

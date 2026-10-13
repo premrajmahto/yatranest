@@ -37,11 +37,7 @@ class Database {
                 self::$instance->exec("SET time_zone = '$tzString'");
             } catch (PDOException $e) {
                 Logger::error("Database connection failed: " . $e->getMessage());
-                if (config('app.debug', false)) {
-                    die("Database Connection Error: " . htmlspecialchars($e->getMessage()));
-                } else {
-                    die("A database error occurred. Please contact the administrator.");
-                }
+                SetupHandler::handle($e, $config);
             }
         }
         return self::$instance;

@@ -74,26 +74,36 @@ class App {
     }
 
     private function loadEnv(): void {
-        $envFile = $this->basePath . '/.env';
-        if (file_exists($envFile)) {
-            $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-            foreach ($lines as $line) {
-                $line = trim($line);
-                if (empty($line) || str_starts_with($line, '#')) {
-                    continue;
-                }
-                if (str_contains($line, '=')) {
-                    [$key, $value] = explode('=', $line, 2);
-                    $key = trim($key);
-                    $value = trim($value);
-                    // Strip quotes if present
-                    if ((str_starts_with($value, '"') && str_ends_with($value, '"')) ||
-                        (str_starts_with($value, "'") && str_ends_with($value, "'"))) {
-                        $value = substr($value, 1, -1);
+        $envCandidates = [
+            $this->basePath . '/.env',
+            dirname($this->basePath) . '/.env',
+            $this->basePath . '/.env.production',
+            $this->basePath . '/.env.local',
+        ];
+
+        foreach ($envCandidates as $envFile) {
+            if (file_exists($envFile)) {
+                $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+                foreach ($lines as $line) {
+                    $line = trim($line);
+                    if (empty($line) || str_starts_with($line, '#')) {
+                        continue;
                     }
-                    $_ENV[$key] = $value;
-                    putenv("$key=$value");
+                    if (str_contains($line, '=')) {
+                        [$key, $value] = explode('=', $line, 2);
+                        $key = trim($key);
+                        $value = trim($value);
+                        // Strip quotes if present
+                        if ((str_starts_with($value, '"') && str_ends_with($value, '"')) ||
+                            (str_starts_with($value, "'") && str_ends_with($value, "'"))) {
+                            $value = substr($value, 1, -1);
+                        }
+                        $_ENV[$key] = $value;
+                        $_SERVER[$key] = $value;
+                        putenv("$key=$value");
+                    }
                 }
+                break;
             }
         }
     }
