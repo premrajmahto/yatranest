@@ -18,6 +18,7 @@ use App\Controllers\Front\ContactController;
 use App\Controllers\Front\CustomerDashboardController;
 use App\Controllers\Front\DestinationController;
 use App\Controllers\Front\HomeController;
+use App\Controllers\Front\InstallController;
 use App\Controllers\Front\PaymentController;
 use App\Controllers\Front\ReviewController;
 use App\Controllers\Front\StaticPageController;
@@ -43,6 +44,8 @@ $router->get('/terms', [StaticPageController::class, 'terms']);
 $router->get('/cancellation-policy', [StaticPageController::class, 'cancellation']);
 $router->get('/contact', [ContactController::class, 'show']);
 $router->post('/contact/submit', [ContactController::class, 'submit'], [CsrfMiddleware::class]);
+$router->get('/install', [InstallController::class, 'index']);
+$router->post('/install', [InstallController::class, 'setup']);
 
 // Customer Authentication
 $router->get('/login', [AuthController::class, 'showLogin']);

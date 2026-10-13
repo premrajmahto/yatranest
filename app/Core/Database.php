@@ -54,8 +54,31 @@ class Database {
                 $tzString = sprintf('%s%02d:%02d', $offsetHours >= 0 ? '+' : '-', abs($offsetHours), $offsetMins);
                 self::$instance->exec("SET time_zone = '$tzString'");
             } catch (PDOException $e) {
-                Logger::error("Database connection failed: " . $e->getMessage());
-                SetupHandler::handle($e, $config);
+                Logger::error("MySQL connection failed: " . $e->getMessage() . " - Activating automatic SQLite fallback.");
+
+                try {
+                    $sqlitePath = dirname(__DIR__, 2) . '/storage/database.sqlite';
+                    $needSeed = !file_exists($sqlitePath) || filesize($sqlitePath) < 1000;
+
+                    if (!file_exists($sqlitePath)) {
+                        @mkdir(dirname($sqlitePath), 0777, true);
+                        touch($sqlitePath);
+                    }
+
+                    self::$instance = new PDO("sqlite:" . $sqlitePath);
+                    self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+                    self::$instance->sqliteCreateFunction('NOW', fn() => date('Y-m-d H:i:s'));
+
+                    if ($needSeed) {
+                        SqliteSeeder::seed(self::$instance);
+                    }
+
+                    return self::$instance;
+                } catch (\Throwable $fallbackEx) {
+                    Logger::error("SQLite fallback failed: " . $fallbackEx->getMessage());
+                    SetupHandler::handle($e, $config);
+                }
             }
         }
         return self::$instance;

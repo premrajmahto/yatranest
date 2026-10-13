@@ -5,17 +5,21 @@ namespace App\Core;
 use PDO;
 use PDOException;
 
-class SetupHandler {
     public static function handle(PDOException $e, array $config): void {
+        self::renderInstaller($e, $config);
+    }
+
+    public static function renderInstaller(?PDOException $e = null, ?array $config = null): void {
+        $config = $config ?? config('database', []);
         $basePath = dirname(__DIR__, 2);
         $envFile = $basePath . '/.env';
         $envExists = file_exists($envFile) || file_exists(dirname($basePath) . '/.env');
 
         // Check if unconfigured or default localhost credentials
-        $isDefaultOrMissing = !$envExists || ($config['username'] === 'root' && empty($config['password']));
+        $isDefaultOrMissing = !$envExists || (($config['username'] ?? '') === 'root' && empty($config['password'] ?? ''));
 
         // If configured with real credentials but DB server is temporarily down in production:
-        if (!$isDefaultOrMissing && !config('app.debug', false)) {
+        if ($e !== null && !$isDefaultOrMissing && !config('app.debug', false)) {
             http_response_code(503);
             die("<!DOCTYPE html><html><head><title>Service Temporarily Unavailable</title></head><body style='font-family:sans-serif;text-align:center;padding:50px;'><h2>Database Connection Error</h2><p>We are experiencing a temporary database issue. Please try again in a few moments.</p></body></html>");
         }
@@ -291,7 +295,7 @@ ENV;
                                 </p>
                             </div>
                             <div class="col-md-5 text-md-end">
-                                <form method="POST" class="m-0">
+                                <form method="POST" action="<?= htmlspecialchars($appUrl) ?>/install" class="m-0">
                                     <input type="hidden" name="launch_sqlite" value="1">
                                     <button type="submit" class="btn btn-warning btn-lg fw-bold rounded-pill px-4 shadow py-2 text-dark">
                                         <i class="bi bi-lightning-charge-fill me-1"></i> Launch Website Now
@@ -316,7 +320,7 @@ ENV;
                                     Enter your MySQL database details from your <strong>Hostinger hPanel</strong> (Databases &rarr; MySQL Databases):
                                 </p>
 
-                                <form method="POST">
+                                <form method="POST" action="<?= htmlspecialchars($appUrl) ?>/install">
                                     <input type="hidden" name="setup_db" value="1">
                                     <div class="row g-2 mb-2">
                                         <div class="col-8">
