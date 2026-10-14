@@ -30,7 +30,7 @@
                     </div>
                     <div>
                         <strong class="d-block text-dark">Telephone Support:</strong>
-                        <span class="text-muted small">+91 98765 43210 (24/7 Helpline)</span>
+                        <span class="text-muted small"><a href="tel:+916000595647" class="text-decoration-none text-dark fw-semibold">+91 60005 95647</a> (24/7 Helpline)</span>
                     </div>
                 </div>
 
@@ -41,7 +41,7 @@
                     <div>
                         <strong class="d-block text-dark">WhatsApp Direct:</strong>
                         <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about your travel packages and services.') ?>" target="_blank" rel="noopener" class="text-success text-decoration-none fw-semibold small">
-                            Chat on WhatsApp <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            +91 60005 95647 &bull; Chat on WhatsApp <i class="bi bi-box-arrow-up-right ms-1"></i>
                         </a>
                     </div>
                 </div>
@@ -52,7 +52,10 @@
                     </div>
                     <div>
                         <strong class="d-block text-dark">Email Inquiries:</strong>
-                        <span class="text-muted small">support@yatranest.com / bookings@yatranest.com</span>
+                        <span class="text-muted small">
+                            <a href="mailto:yatranest18@gmail.com" class="text-decoration-none text-dark fw-semibold">yatranest18@gmail.com</a> / 
+                            <a href="mailto:yatranest.bookings@gmail.com" class="text-decoration-none text-dark fw-semibold">yatranest.bookings@gmail.com</a>
+                        </span>
                     </div>
                 </div>
 
@@ -87,7 +90,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-semibold text-dark">Phone Number</label>
-                            <input type="tel" name="phone" class="form-control" placeholder="+91 98765 43210" value="<?= e(old('phone')) ?>">
+                            <input type="tel" name="phone" class="form-control" placeholder="+91 60005 95647" value="<?= e(old('phone')) ?>">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-semibold text-dark">Subject *</label>

@@ -9,8 +9,8 @@ class InvoiceService {
         $settingModel = new SiteSetting();
         $companyName = $settingModel->get('company_name', 'YatraNest Holidays Pvt Ltd');
         $companyAddress = $settingModel->get('company_address', 'Suite 402, Travel Towers, MG Road, Bengaluru, India');
-        $companyPhone = $settingModel->get('company_phone', '+91 98765 43210');
-        $companyEmail = $settingModel->get('company_email', 'support@yatranest.com');
+        $companyPhone = $settingModel->get('company_phone', '+91 60005 95647');
+        $companyEmail = $settingModel->get('company_email', 'yatranest18@gmail.com');
         $companyGstin = $settingModel->get('company_gstin', '29ABCDE1234F1Z5');
 
         $invoiceNum = 'INV-' . str_replace('YN-', '', $booking['booking_reference']);

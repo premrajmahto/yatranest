@@ -87,7 +87,7 @@ class MailService {
                 </div>
             </div>
             <div style='border-top: 1px solid #e2e8f0; padding-top: 15px; text-align: center; font-size: 12px; color: #64748b;'>
-                <p>Need assistance? Contact our 24/7 support at support@yatranest.com or call +91 98765 43210.</p>
+                <p>Need assistance? Contact our 24/7 support at yatranest18@gmail.com or call +91 60005 95647.</p>
                 <p>&copy; " . date('Y') . " YatraNest Holidays Pvt Ltd. All rights reserved.</p>
             </div>
         </div>";

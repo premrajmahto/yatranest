@@ -53,10 +53,15 @@
                 </form>
                 <div class="small text-secondary">
                     <div><i class="bi bi-shield-check text-success me-1"></i> Verified Secure Razorpay Gateway</div>
-                    <div><i class="bi bi-headset text-info me-1"></i> 24/7 Traveler Emergency Support</div>
+                    <div><i class="bi bi-headset text-info me-1"></i> 24/7 Support: <a href="tel:+916000595647" class="text-white text-decoration-none fw-semibold">+91 60005 95647</a></div>
                     <div class="mt-1">
                         <a href="<?= whatsapp_url('Hi YatraNest, I would like direct customer assistance.') ?>" target="_blank" rel="noopener" class="text-success text-decoration-none fw-semibold">
-                            <i class="bi bi-whatsapp me-1"></i> Direct WhatsApp Helpline
+                            <i class="bi bi-whatsapp me-1"></i> WhatsApp: +91 60005 95647
+                        </a>
+                    </div>
+                    <div class="mt-1">
+                        <a href="mailto:yatranest18@gmail.com" class="text-secondary text-decoration-none">
+                            <i class="bi bi-envelope me-1"></i> yatranest18@gmail.com
                         </a>
                     </div>
                 </div>

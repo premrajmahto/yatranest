@@ -101,6 +101,31 @@ class Database {
                         }
                     }
                 } catch (\Throwable $repairEx) {}
+
+                // Self-healing: Ensure updated contact details (phone, whatsapp, emails)
+                try {
+                    self::$instance->exec("
+                        UPDATE site_settings 
+                        SET setting_value = '+91 60005 95647' 
+                        WHERE setting_key = 'company_phone' AND (setting_value LIKE '%98765%' OR setting_value = '');
+                        UPDATE site_settings 
+                        SET setting_value = 'yatranest18@gmail.com' 
+                        WHERE setting_key = 'company_email' AND (setting_value LIKE '%yatranest.com%' OR setting_value = '');
+                    ");
+                    $hasWa = self::$instance->query("SELECT id FROM site_settings WHERE setting_key = 'company_whatsapp' LIMIT 1")->fetchColumn();
+                    if (!$hasWa) {
+                        self::$instance->exec("
+                            INSERT INTO site_settings (setting_key, setting_value, setting_group, description) 
+                            VALUES ('company_whatsapp', '+91 60005 95647', 'general', 'Official WhatsApp Number (Direct Contact)')
+                        ");
+                    } else {
+                        self::$instance->exec("
+                            UPDATE site_settings 
+                            SET setting_value = '+91 60005 95647' 
+                            WHERE setting_key = 'company_whatsapp' AND (setting_value LIKE '%98765%' OR setting_value = '')
+                        ");
+                    }
+                } catch (\Throwable $contactEx) {}
             } catch (PDOException $e) {
                 Logger::error("MySQL connection failed: " . $e->getMessage() . " - Activating automatic SQLite fallback.");
 
