@@ -465,3 +465,68 @@ body {
     opacity: 0;
   }
 }
+
+/* Page Header Banners with Background Imagery */
+.yn-page-header {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  padding: 4.5rem 0;
+  margin-bottom: 3rem;
+  overflow: hidden;
+}
+
+.yn-page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13, 35, 58, 0.72) 0%, rgba(13, 35, 58, 0.88) 100%);
+  z-index: 1;
+}
+
+.yn-page-header .container {
+  position: relative;
+  z-index: 2;
+}
+
+.yn-page-header h1 {
+  color: #ffffff !important;
+  font-weight: 800;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.yn-page-header p.lead,
+.yn-page-header .lead {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-weight: 400;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
+
+.yn-page-header p.text-muted,
+.yn-page-header .text-muted {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.yn-page-header .breadcrumb {
+  margin-bottom: 0.75rem;
+}
+
+.yn-page-header .breadcrumb-item a {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration: none;
+}
+
+.yn-page-header .breadcrumb-item a:hover {
+  color: #ffffff !important;
+}
+
+.yn-page-header .breadcrumb-item.active {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.yn-page-header .breadcrumb-item + .breadcrumb-item::before {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+

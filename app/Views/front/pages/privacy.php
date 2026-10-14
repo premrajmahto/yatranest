@@ -1,7 +1,7 @@
-<div class="bg-light py-5 mb-5 border-bottom">
+<div class="yn-page-header" style="background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1920&q=80');">
     <div class="container text-center">
-        <h1 class="fw-extrabold display-5 text-dark mb-2">Privacy Policy</h1>
-        <p class="text-muted small">Last updated: January 2026</p>
+        <h1 class="fw-extrabold display-5 text-white mb-2">Privacy Policy</h1>
+        <p class="lead text-white-50 small mb-0">Last updated: January 2026</p>
     </div>
 </div>
 

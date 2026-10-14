@@ -1,28 +1,28 @@
 <!-- Package Header Breadcrumb & Hero -->
-<div class="bg-light py-4 border-bottom">
+<div class="yn-page-header py-4 mb-0" style="background-image: url('<?= e($package['featured_image']) ?>');">
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-2 small">
-                <li class="breadcrumb-item"><a href="<?= url('/') ?>" class="text-decoration-none">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?= url('/packages') ?>" class="text-decoration-none">Tour Packages</a></li>
-                <li class="breadcrumb-item"><a href="<?= url('/destinations/' . $package['destination_id']) ?>" class="text-decoration-none"><?= e($package['destination_name']) ?></a></li>
-                <li class="breadcrumb-item active" aria-current="page"><?= e($package['title']) ?></li>
+                <li class="breadcrumb-item"><a href="<?= url('/') ?>" class="text-white-50 text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('/packages') ?>" class="text-white-50 text-decoration-none">Tour Packages</a></li>
+                <li class="breadcrumb-item"><a href="<?= url('/destinations/' . $package['destination_id']) ?>" class="text-white-50 text-decoration-none"><?= e($package['destination_name']) ?></a></li>
+                <li class="breadcrumb-item active text-white" aria-current="page"><?= e($package['title']) ?></li>
             </ol>
         </nav>
         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
             <div>
-                <h1 class="fw-extrabold h2 text-dark mb-1"><?= e($package['title']) ?></h1>
-                <div class="d-flex flex-wrap align-items-center gap-3 small text-muted">
-                    <span><i class="bi bi-geo-alt-fill text-danger me-1"></i><?= e($package['destination_name']) ?>, <?= e($package['country']) ?></span>
-                    <span><i class="bi bi-clock-fill text-primary me-1"></i><?= (int)$package['duration_days'] ?> Days / <?= (int)$package['duration_nights'] ?> Nights</span>
-                    <span><i class="bi bi-people-fill text-secondary me-1"></i>Max Group: <?= (int)$package['group_size_max'] ?></span>
+                <h1 class="fw-extrabold h2 text-white mb-1"><?= e($package['title']) ?></h1>
+                <div class="d-flex flex-wrap align-items-center gap-3 small text-white-50">
+                    <span><i class="bi bi-geo-alt-fill text-warning me-1"></i><?= e($package['destination_name']) ?>, <?= e($package['country']) ?></span>
+                    <span><i class="bi bi-clock-fill text-info me-1"></i><?= (int)$package['duration_days'] ?> Days / <?= (int)$package['duration_nights'] ?> Nights</span>
+                    <span><i class="bi bi-people-fill text-light me-1"></i>Max Group: <?= (int)$package['group_size_max'] ?></span>
                     <span class="text-warning fw-bold"><i class="bi bi-star-fill me-1"></i><?= number_format((float)($package['avg_rating'] ?? 5.0), 1) ?> (<?= count($reviews) ?> Reviews)</span>
                 </div>
             </div>
             <div>
-                <span class="text-muted small d-block text-end">Price Per Adult</span>
-                <span class="fs-2 fw-extrabold text-danger"><?= format_currency($package['price_adult']) ?></span>
-                <span class="text-muted small"> + taxes</span>
+                <span class="text-white-50 small d-block text-end">Price Per Adult</span>
+                <span class="fs-2 fw-extrabold text-warning"><?= format_currency($package['price_adult']) ?></span>
+                <span class="text-white-50 small"> + taxes</span>
             </div>
         </div>
     </div>

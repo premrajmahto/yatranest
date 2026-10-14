@@ -1,7 +1,7 @@
-<div class="bg-light py-4 border-bottom mb-4">
+<div class="yn-page-header py-4 mb-4" style="background-image: url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1920&q=80');">
     <div class="container">
-        <h1 class="h3 fw-bold text-dark mb-1">Secure Tour Booking & Checkout</h1>
-        <p class="text-muted small mb-0">Please verify your traveler details, apply coupons, and choose your payment option.</p>
+        <h1 class="h3 fw-bold text-white mb-1">Secure Tour Booking & Checkout</h1>
+        <p class="lead text-white-50 small mb-0">Please verify your traveler details, apply coupons, and choose your payment option.</p>
     </div>
 </div>
 

@@ -1,7 +1,7 @@
-<div class="bg-light py-5 mb-5 border-bottom">
+<div class="yn-page-header" style="background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1920&q=80');">
     <div class="container text-center">
-        <h1 class="fw-extrabold display-5 text-dark mb-2">About YatraNest</h1>
-        <p class="text-muted lead mx-auto" style="max-width: 650px;">
+        <h1 class="fw-extrabold display-5 text-white mb-2">About YatraNest</h1>
+        <p class="lead mx-auto" style="max-width: 650px;">
             Connecting wanderlust travelers with unforgettable holiday memories across India and around the globe.
         </p>
     </div>

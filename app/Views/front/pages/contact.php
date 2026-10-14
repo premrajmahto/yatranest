@@ -1,7 +1,7 @@
-<div class="bg-light py-5 mb-5 border-bottom">
+<div class="yn-page-header" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80');">
     <div class="container text-center">
-        <h1 class="fw-extrabold display-5 text-dark mb-2">Get in Touch With Us</h1>
-        <p class="text-muted lead mx-auto" style="max-width: 650px;">
+        <h1 class="fw-extrabold display-5 text-white mb-2">Get in Touch With Us</h1>
+        <p class="lead mx-auto" style="max-width: 650px;">
             Have questions about a holiday package, custom itinerary, or group booking? Our holiday planners are ready to assist.
         </p>
     </div>

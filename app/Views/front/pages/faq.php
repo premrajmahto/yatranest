@@ -1,7 +1,7 @@
-<div class="bg-light py-5 mb-5 border-bottom">
+<div class="yn-page-header" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80');">
     <div class="container text-center">
-        <h1 class="fw-extrabold display-5 text-dark mb-2">Frequently Asked Questions</h1>
-        <p class="text-muted lead mx-auto" style="max-width: 650px;">
+        <h1 class="fw-extrabold display-5 text-white mb-2">Frequently Asked Questions</h1>
+        <p class="lead mx-auto" style="max-width: 650px;">
             Find quick answers to common questions about booking, payments, seat reservations, and cancellation policies.
         </p>
     </div>

@@ -1,7 +1,7 @@
-<div class="bg-light py-5 mb-5 border-bottom">
+<div class="yn-page-header" style="background-image: url('https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1920&q=80');">
     <div class="container text-center">
-        <h1 class="fw-extrabold display-5 text-dark mb-2">Explore Destinations</h1>
-        <p class="text-muted lead mx-auto" style="max-width: 650px;">
+        <h1 class="fw-extrabold display-5 text-white mb-2">Explore Destinations</h1>
+        <p class="lead mx-auto" style="max-width: 650px;">
             Discover incredible domestic escapes across India and premier international gateways.
         </p>
     </div>
