@@ -34,6 +34,7 @@ $router->get('/', [HomeController::class, 'index']);
 $router->post('/newsletter', [HomeController::class, 'newsletter'], [CsrfMiddleware::class]);
 $router->get('/destinations', [DestinationController::class, 'index']);
 $router->get('/destinations/{slug}', [DestinationController::class, 'detail']);
+$router->get('/fix-destinations', [DestinationController::class, 'fixDestinations']);
 $router->get('/packages', [TourPackageController::class, 'index']);
 $router->get('/packages/{slug}', [TourPackageController::class, 'detail']);
 $router->get('/hotels', [StaticPageController::class, 'hotels']);

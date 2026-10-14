@@ -19,7 +19,7 @@ class HomeController extends Controller {
         $revModel = new Review();
 
         $destinations = $destModel->getAllActive();
-        $featuredDestinations = $destModel->getFeatured(8);
+        $featuredDestinations = $destModel->getFeatured(12);
         $featuredPackages = $pkgModel->getFeatured(6);
         $categories = $catModel->getAllActive();
         $reviews = $revModel->getRecentApproved(6);

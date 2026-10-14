@@ -59,6 +59,48 @@ class Database {
                 $offsetMins = (int)(abs($offsetSecs) % 3600 / 60);
                 $tzString = sprintf('%s%02d:%02d', $offsetHours >= 0 ? '+' : '-', abs($offsetHours), $offsetMins);
                 self::$instance->exec("SET time_zone = '$tzString'");
+
+                // Self-healing: Repair any mismatched destination imagery automatically
+                try {
+                    $badDest = self::$instance->query("
+                        SELECT id FROM destinations 
+                        WHERE (slug = 'assam' OR name LIKE '%Assam%') AND image_url LIKE '%photo-1537996194471%'
+                           OR (slug = 'darjeeling' OR name LIKE '%Darjeeling%') AND image_url LIKE '%photo-1602216056096%'
+                           OR (slug = 'manipur' OR name LIKE '%Manipur%') AND image_url LIKE '%photo-1595815771614%'
+                           OR (slug = 'meghalaya' OR name LIKE '%Meghalaya%') AND image_url LIKE '%photo-1512343879784%'
+                           OR (slug = 'mizoram' OR name LIKE '%Mizoram%') AND image_url LIKE '%photo-1477587458883%'
+                           OR (slug = 'sikkim' OR name LIKE '%Sikkim%') AND image_url LIKE '%photo-1512453979798%'
+                           OR (slug = 'nagaland' OR name LIKE '%Nagaland%') AND image_url LIKE '%photo-1626621341517%'
+                           OR (slug = 'tripura' OR name LIKE '%Tripura%') AND image_url LIKE '%photo-1530122037265%'
+                        LIMIT 1
+                    ")->fetchColumn();
+
+                    if ($badDest) {
+                        $suitableImages = [
+                            'arunachal-pradesh' => 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=80',
+                            'assam' => 'https://images.unsplash.com/photo-1575550959106-5a7defe28b56?auto=format&fit=crop&w=1200&q=80',
+                            'meghalaya' => 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=1200&q=80',
+                            'darjeeling' => 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+                            'manipur' => 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80',
+                            'mizoram' => 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80',
+                            'nagaland' => 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80',
+                            'tripura' => 'https://images.unsplash.com/photo-1566837945700-30057527ade0?auto=format&fit=crop&w=1200&q=80',
+                            'sikkim' => 'https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=1200&q=80',
+                            'bhutan' => 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1200&q=80',
+                        ];
+                        $upStmt = self::$instance->prepare("
+                            UPDATE destinations SET image_url = :img, is_featured = 1 
+                            WHERE slug = :slug OR name LIKE :nameLike
+                        ");
+                        foreach ($suitableImages as $sSlug => $sImg) {
+                            $upStmt->execute([
+                                ':img' => $sImg,
+                                ':slug' => $sSlug,
+                                ':nameLike' => '%' . str_replace('-', ' ', $sSlug) . '%'
+                            ]);
+                        }
+                    }
+                } catch (\Throwable $repairEx) {}
             } catch (PDOException $e) {
                 Logger::error("MySQL connection failed: " . $e->getMessage() . " - Activating automatic SQLite fallback.");
 
