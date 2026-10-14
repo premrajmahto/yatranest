@@ -20,7 +20,7 @@
                     </div>
                     <div>
                         <strong class="d-block text-dark">Our Headquarters:</strong>
-                        <span class="text-muted small">Suite 402, Travel Towers, MG Road, Bengaluru, Karnataka 560001, India</span>
+                        <span class="text-muted small">Guwahati, Assam, India</span>
                     </div>
                 </div>
 

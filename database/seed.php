@@ -1509,7 +1509,7 @@ $settings = [
     ['setting_key' => 'site_name', 'setting_value' => 'YatraNest', 'setting_group' => 'general', 'description' => 'Website Brand Name'],
     ['setting_key' => 'site_tagline', 'setting_value' => 'Crafting Unforgettable Journeys Across The Globe', 'setting_group' => 'general', 'description' => 'Tagline displayed on header/hero'],
     ['setting_key' => 'company_name', 'setting_value' => 'YatraNest Holidays Pvt Ltd', 'setting_group' => 'general', 'description' => 'Legal registered company name'],
-    ['setting_key' => 'company_address', 'setting_value' => 'Suite 402, Travel Towers, MG Road, Bengaluru, Karnataka 560001, India', 'setting_group' => 'general', 'description' => 'Official physical address'],
+    ['setting_key' => 'company_address', 'setting_value' => 'Guwahati, Assam, India', 'setting_group' => 'general', 'description' => 'Official physical address'],
     ['setting_key' => 'company_phone', 'setting_value' => '+91 60005 95647', 'setting_group' => 'general', 'description' => 'Customer support telephone'],
     ['setting_key' => 'company_whatsapp', 'setting_value' => '+91 60005 95647', 'setting_group' => 'general', 'description' => 'Official WhatsApp Number (Direct Contact)'],
     ['setting_key' => 'company_email', 'setting_value' => 'yatranest18@gmail.com', 'setting_group' => 'general', 'description' => 'Primary public contact email'],

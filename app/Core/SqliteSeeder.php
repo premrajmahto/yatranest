@@ -681,7 +681,7 @@ class SqliteSeeder {
             ['site_name', 'YatraNest', 'general', 'Website Brand Name'],
             ['site_tagline', 'Crafting Unforgettable Journeys Across The Globe', 'general', 'Tagline'],
             ['company_name', 'YatraNest Holidays Pvt Ltd', 'general', 'Company Name'],
-            ['company_address', 'Suite 402, Travel Towers, MG Road, Bengaluru, Karnataka 560001, India', 'general', 'Address'],
+            ['company_address', 'Guwahati, Assam, India', 'general', 'Address'],
             ['company_phone', '+91 60005 95647', 'general', 'Support Telephone'],
             ['company_whatsapp', '+91 60005 95647', 'general', 'WhatsApp Support Phone'],
             ['company_email', 'yatranest18@gmail.com', 'general', 'Contact Email'],

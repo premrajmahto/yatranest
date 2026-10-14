@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-semibold text-dark">Registered Address</label>
-                            <textarea name="company_address" class="form-control" rows="2"><?= e($settings['company_address'] ?? 'Suite 402, Travel Towers, MG Road, Bengaluru, India') ?></textarea>
+                            <textarea name="company_address" class="form-control" rows="2"><?= e($settings['company_address'] ?? 'Guwahati, Assam, India') ?></textarea>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-semibold text-dark">Company GSTIN Number</label>

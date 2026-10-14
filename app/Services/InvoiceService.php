@@ -8,7 +8,7 @@ class InvoiceService {
     public function renderInvoiceHtml(array $booking): string {
         $settingModel = new SiteSetting();
         $companyName = $settingModel->get('company_name', 'YatraNest Holidays Pvt Ltd');
-        $companyAddress = $settingModel->get('company_address', 'Suite 402, Travel Towers, MG Road, Bengaluru, India');
+        $companyAddress = $settingModel->get('company_address', 'Guwahati, Assam, India');
         $companyPhone = $settingModel->get('company_phone', '+91 60005 95647');
         $companyEmail = $settingModel->get('company_email', 'yatranest18@gmail.com');
         $companyGstin = $settingModel->get('company_gstin', '29ABCDE1234F1Z5');

@@ -111,6 +111,9 @@ class Database {
                         UPDATE site_settings 
                         SET setting_value = 'yatranest18@gmail.com' 
                         WHERE setting_key = 'company_email' AND (setting_value LIKE '%yatranest.com%' OR setting_value = '');
+                        UPDATE site_settings 
+                        SET setting_value = 'Guwahati, Assam, India' 
+                        WHERE setting_key = 'company_address' AND (setting_value LIKE '%Bengaluru%' OR setting_value = '' OR setting_value = 'Guwahati, India');
                     ");
                     $hasWa = self::$instance->query("SELECT id FROM site_settings WHERE setting_key = 'company_whatsapp' LIMIT 1")->fetchColumn();
                     if (!$hasWa) {
