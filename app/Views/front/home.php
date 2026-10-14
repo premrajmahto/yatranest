@@ -254,56 +254,72 @@
 </section>
 
 <!-- Customer Reviews Section -->
-<section class="py-5">
+<section class="py-5 bg-white position-relative overflow-hidden">
     <div class="container">
-        <div class="text-center mb-5">
-            <span class="text-secondary fw-bold text-uppercase small">Real Stories</span>
-            <h2 class="fw-bold text-dark">What Our Travelers Say</h2>
+        <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
+            <div>
+                <span class="text-secondary fw-bold text-uppercase small">Real Stories</span>
+                <h2 class="fw-bold text-dark m-0">What Our Travelers Say</h2>
+            </div>
+            <!-- Slider Controls -->
+            <div class="d-flex gap-2 mt-3 mt-md-0">
+                <button type="button" class="yn-slider-btn yn-slider-prev" aria-label="Previous Reviews" title="Previous Reviews">
+                    <i class="bi bi-chevron-left fs-5"></i>
+                </button>
+                <button type="button" class="yn-slider-btn yn-slider-next" aria-label="Next Reviews" title="Next Reviews">
+                    <i class="bi bi-chevron-right fs-5"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="row g-4">
-            <?php if (empty($reviews)): ?>
-            <div class="col-12 text-center py-4 text-muted">
-                <i class="bi bi-chat-heart fs-2 d-block mb-2 text-secondary"></i>
-                <p>Authentic reviews from verified travelers will be published here shortly.</p>
-            </div>
-            <?php else: ?>
-            <?php foreach ($reviews as $rev): ?>
-            <?php 
-                $revTitle = $rev['review_title'] ?? $rev['title'] ?? 'Wonderful Experience';
-                $revText = $rev['review_text'] ?? $rev['text'] ?? '';
-                $userName = $rev['user_name'] ?? 'Verified Traveler';
-                $rating = (int)($rev['rating'] ?? 5);
-                $initial = strtoupper(substr($userName, 0, 1));
-            ?>
-            <div class="col-lg-4 col-md-6">
-                <div class="card p-4 rounded-4 border-0 shadow-sm h-100 bg-white d-flex flex-column">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="text-warning">
-                            <?php for ($i = 0; $i < $rating; $i++): ?><i class="bi bi-star-fill"></i><?php endfor; ?>
-                            <?php for ($i = $rating; $i < 5; $i++): ?><i class="bi bi-star text-muted opacity-25"></i><?php endfor; ?>
+        <?php if (empty($reviews)): ?>
+        <div class="text-center py-4 text-muted">
+            <i class="bi bi-chat-heart fs-2 d-block mb-2 text-secondary"></i>
+            <p>Authentic reviews from verified travelers will be published here shortly.</p>
+        </div>
+        <?php else: ?>
+        <div class="yn-reviews-carousel-wrapper">
+            <div class="yn-reviews-track" id="reviewsSliderTrack">
+                <?php foreach ($reviews as $rev): ?>
+                <?php 
+                    $revTitle = $rev['review_title'] ?? $rev['title'] ?? 'Wonderful Experience';
+                    $revText = $rev['review_text'] ?? $rev['text'] ?? '';
+                    $userName = $rev['user_name'] ?? 'Verified Traveler';
+                    $rating = (int)($rev['rating'] ?? 5);
+                    $initial = strtoupper(substr($userName, 0, 1));
+                ?>
+                <div class="yn-reviews-slide">
+                    <div class="card p-4 rounded-4 border-0 shadow-sm h-100 bg-white d-flex flex-column" style="border: 1px solid var(--yn-gray-200) !important;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="text-warning">
+                                <?php for ($i = 0; $i < $rating; $i++): ?><i class="bi bi-star-fill"></i><?php endfor; ?>
+                                <?php for ($i = $rating; $i < 5; $i++): ?><i class="bi bi-star text-muted opacity-25"></i><?php endfor; ?>
+                            </div>
+                            <?php if (!empty($rev['package_title'])): ?>
+                            <span class="badge bg-light text-primary border small text-truncate" style="max-width: 140px;" title="<?= e($rev['package_title']) ?>">
+                                <?= e($rev['package_title']) ?>
+                            </span>
+                            <?php endif; ?>
                         </div>
-                        <?php if (!empty($rev['package_title'])): ?>
-                        <span class="badge bg-light text-primary border small text-truncate" style="max-width: 140px;" title="<?= e($rev['package_title']) ?>">
-                            <?= e($rev['package_title']) ?>
-                        </span>
-                        <?php endif; ?>
-                    </div>
-                    <h6 class="fw-bold text-dark mb-2">"<?= e($revTitle) ?>"</h6>
-                    <p class="text-muted small flex-grow-1">"<?= e($revText) ?>"</p>
-                    <div class="d-flex align-items-center gap-2 pt-3 border-top mt-auto">
-                        <div class="rounded-circle bg-primary-subtle d-flex align-items-center justify-content-center fw-bold text-primary" style="width: 38px; height: 38px;">
-                            <?= e($initial) ?>
-                        </div>
-                        <div>
-                            <strong class="d-block small text-dark"><?= e($userName) ?></strong>
-                            <span class="text-muted" style="font-size: 0.75rem;">Verified Traveler</span>
+                        <h6 class="fw-bold text-dark mb-2">"<?= e($revTitle) ?>"</h6>
+                        <p class="text-muted small flex-grow-1">"<?= e($revText) ?>"</p>
+                        <div class="d-flex align-items-center gap-2 pt-3 border-top mt-auto">
+                            <div class="rounded-circle bg-primary-subtle d-flex align-items-center justify-content-center fw-bold text-primary" style="width: 38px; height: 38px;">
+                                <?= e($initial) ?>
+                            </div>
+                            <div>
+                                <strong class="d-block small text-dark"><?= e($userName) ?></strong>
+                                <span class="text-muted" style="font-size: 0.75rem;">Verified Traveler</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
-            <?php endif; ?>
+
+            <!-- Dots Indicators -->
+            <div class="yn-slider-dots" id="reviewsSliderDots"></div>
         </div>
+        <?php endif; ?>
     </div>
 </section>

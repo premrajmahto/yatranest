@@ -530,3 +530,85 @@ body {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
+/* Reviews Sliding Carousel */
+.yn-reviews-carousel-wrapper {
+  overflow: hidden;
+  position: relative;
+  padding: 10px 4px 20px 4px;
+}
+
+.yn-reviews-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.yn-reviews-slide {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 991.98px) {
+  .yn-reviews-slide {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .yn-reviews-slide {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+.yn-slider-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--yn-gray-200);
+  background: #ffffff;
+  color: var(--yn-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--yn-transition);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.yn-slider-btn:hover {
+  background: var(--yn-secondary);
+  border-color: var(--yn-secondary);
+  color: #ffffff;
+  transform: scale(1.06);
+  box-shadow: 0 4px 12px rgba(0, 128, 128, 0.25);
+}
+
+.yn-slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 25px;
+}
+
+.yn-slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #cbd5e1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.yn-slider-dot.active {
+  background-color: var(--yn-accent, #ff6b35);
+  width: 26px;
+  border-radius: 12px;
+}
+
+
