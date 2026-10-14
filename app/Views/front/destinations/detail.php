@@ -73,7 +73,17 @@
                                 <span class="yn-price-tag"><?= format_currency($pkg['price_adult']) ?></span>
                                 <span class="text-muted small">/person</span>
                             </div>
-                            <a href="<?= url('/packages/' . $pkg['slug']) ?>" class="btn yn-btn-primary btn-sm">View Tour</a>
+                            <div class="d-flex align-items-center gap-2">
+                                <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about the package: ' . $pkg['title'] . ' (Starting from ' . format_currency($pkg['price_adult']) . '). Website link: ' . url('/packages/' . $pkg['slug'])) ?>" 
+                                   target="_blank" 
+                                   rel="noopener" 
+                                   class="yn-btn-whatsapp-icon" 
+                                   title="Direct WhatsApp Contact"
+                                   aria-label="Direct WhatsApp Contact">
+                                    <i class="bi bi-whatsapp"></i>
+                                </a>
+                                <a href="<?= url('/packages/' . $pkg['slug']) ?>" class="btn yn-btn-primary btn-sm">View Tour</a>
+                            </div>
                         </div>
                     </div>
                 </div>

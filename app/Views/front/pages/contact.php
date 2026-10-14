@@ -35,6 +35,18 @@
                 </div>
 
                 <div class="d-flex align-items-start gap-3 mb-4">
+                    <div class="p-3 bg-white text-success rounded-circle shadow-sm fs-4">
+                        <i class="bi bi-whatsapp"></i>
+                    </div>
+                    <div>
+                        <strong class="d-block text-dark">WhatsApp Direct:</strong>
+                        <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about your travel packages and services.') ?>" target="_blank" rel="noopener" class="text-success text-decoration-none fw-semibold small">
+                            Chat on WhatsApp <i class="bi bi-box-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3 mb-4">
                     <div class="p-3 bg-white text-warning rounded-circle shadow-sm fs-4">
                         <i class="bi bi-envelope-fill"></i>
                     </div>

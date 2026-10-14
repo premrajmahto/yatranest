@@ -36,6 +36,18 @@
 
     <?php require dirname(__DIR__) . '/partials/footer.php'; ?>
 
+    <!-- Floating Direct WhatsApp Contact Button -->
+    <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about holiday packages and direct booking assistance.') ?>" 
+       target="_blank" 
+       rel="noopener" 
+       class="yn-whatsapp-floating" 
+       title="Chat with us on WhatsApp"
+       aria-label="Direct WhatsApp Contact">
+        <span class="yn-whatsapp-pulse"></span>
+        <i class="bi bi-whatsapp"></i>
+        <span class="yn-wa-tooltip">Chat on WhatsApp</span>
+    </a>
+
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?= asset('js/main.js') ?>"></script>

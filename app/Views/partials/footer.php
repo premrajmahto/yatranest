@@ -54,6 +54,11 @@
                 <div class="small text-secondary">
                     <div><i class="bi bi-shield-check text-success me-1"></i> Verified Secure Razorpay Gateway</div>
                     <div><i class="bi bi-headset text-info me-1"></i> 24/7 Traveler Emergency Support</div>
+                    <div class="mt-1">
+                        <a href="<?= whatsapp_url('Hi YatraNest, I would like direct customer assistance.') ?>" target="_blank" rel="noopener" class="text-success text-decoration-none fw-semibold">
+                            <i class="bi bi-whatsapp me-1"></i> Direct WhatsApp Helpline
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

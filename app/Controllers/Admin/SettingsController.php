@@ -24,6 +24,7 @@ class SettingsController extends Controller {
         $fields = [
             'company_name' => 'general',
             'company_phone' => 'general',
+            'company_whatsapp' => 'general',
             'company_email' => 'general',
             'company_address' => 'general',
             'company_gstin' => 'general',

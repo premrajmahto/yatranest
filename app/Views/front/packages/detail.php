@@ -177,6 +177,9 @@
                 <div class="alert alert-warning small">
                     <i class="bi bi-calendar-x me-1"></i> No upcoming departures currently open for online booking. Please contact our support team.
                 </div>
+                <a href="<?= whatsapp_url('Hi YatraNest, I would like to enquire about custom departure dates for package: ' . $package['title'] . ' (' . url('/packages/' . $package['slug']) . ')') ?>" target="_blank" rel="noopener" class="btn yn-btn-whatsapp w-100 py-2 fw-bold mb-2">
+                    <i class="bi bi-whatsapp me-1"></i> WhatsApp Custom Enquiry
+                </a>
                 <a href="<?= url('/contact') ?>" class="btn yn-btn-outline w-100">Enquire for Custom Dates</a>
                 <?php else: ?>
 
@@ -242,6 +245,14 @@
                     <button type="submit" class="btn yn-btn-primary w-100 py-2 fw-bold mb-2" id="bookNowBtn">
                         <i class="bi bi-lightning-fill me-1"></i> Proceed to Book Now
                     </button>
+
+                    <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about booking: ' . $package['title'] . ' (Starting from ' . format_currency($package['price_adult']) . '). Website link: ' . url('/packages/' . $package['slug'])) ?>" 
+                       target="_blank" 
+                       rel="noopener" 
+                       class="btn yn-btn-whatsapp w-100 py-2 fw-bold mb-2"
+                       id="whatsappDirectBtn">
+                        <i class="bi bi-whatsapp fs-6 me-1"></i> Direct WhatsApp Enquiry
+                    </a>
                 </form>
 
                 <div class="text-center mt-3">

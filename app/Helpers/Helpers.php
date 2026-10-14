@@ -140,3 +140,36 @@ if (!function_exists('view')) {
         App::getInstance()->renderView($viewPath, $data, $layout);
     }
 }
+
+if (!function_exists('whatsapp_phone')) {
+    function whatsapp_phone(?string $phone = null): string {
+        if ($phone === null) {
+            try {
+                $settingModel = new \App\Models\SiteSetting();
+                $phone = $settingModel->get('company_whatsapp');
+                if (empty($phone)) {
+                    $phone = $settingModel->get('company_phone', '919876543210');
+                }
+            } catch (\Throwable $e) {
+                $phone = '919876543210';
+            }
+        }
+        $digits = preg_replace('/[^0-9]/', '', (string)$phone);
+        if (strlen($digits) === 10) {
+            $digits = '91' . $digits;
+        }
+        return !empty($digits) ? $digits : '919876543210';
+    }
+}
+
+if (!function_exists('whatsapp_url')) {
+    function whatsapp_url(string $customMessage = '', ?string $phone = null): string {
+        $waPhone = whatsapp_phone($phone);
+        $url = 'https://wa.me/' . $waPhone;
+        if (!empty($customMessage)) {
+            $url .= '?text=' . rawurlencode($customMessage);
+        }
+        return $url;
+    }
+}
+

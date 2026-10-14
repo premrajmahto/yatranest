@@ -26,6 +26,10 @@
                             <input type="tel" name="company_phone" class="form-control" value="<?= e($settings['company_phone'] ?? '+91 98765 43210') ?>">
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-dark">Official WhatsApp Number (Direct Contact)</label>
+                            <input type="tel" name="company_whatsapp" class="form-control" placeholder="+91 98765 43210" value="<?= e($settings['company_whatsapp'] ?? ($settings['company_phone'] ?? '+91 98765 43210')) ?>">
+                        </div>
+                        <div class="col-md-12">
                             <label class="form-label small fw-semibold text-dark">Official Support Email</label>
                             <input type="email" name="company_email" class="form-control" value="<?= e($settings['company_email'] ?? 'support@yatranest.com') ?>">
                         </div>

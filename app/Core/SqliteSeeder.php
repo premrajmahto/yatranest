@@ -683,6 +683,7 @@ class SqliteSeeder {
             ['company_name', 'YatraNest Holidays Pvt Ltd', 'general', 'Company Name'],
             ['company_address', 'Suite 402, Travel Towers, MG Road, Bengaluru, Karnataka 560001, India', 'general', 'Address'],
             ['company_phone', '+91 98765 43210', 'general', 'Support Telephone'],
+            ['company_whatsapp', '+91 98765 43210', 'general', 'WhatsApp Support Phone'],
             ['company_email', 'support@yatranest.com', 'general', 'Contact Email'],
             ['company_gstin', '29ABCDE1234F1Z5', 'general', 'GST Number'],
             ['tax_rate', '5.00', 'booking', 'GST Tax Rate Percentage'],
