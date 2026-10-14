@@ -41,11 +41,12 @@
        target="_blank" 
        rel="noopener" 
        class="yn-whatsapp-floating" 
-       title="Chat with us on WhatsApp"
-       aria-label="Direct WhatsApp Contact">
+       style="background: #25D366; color: #ffffff;"
+       title="WhatsApp: +91 60005 95647"
+       aria-label="Direct WhatsApp Contact (+91 60005 95647)">
         <span class="yn-whatsapp-pulse"></span>
         <i class="bi bi-whatsapp"></i>
-        <span class="yn-wa-tooltip">Chat on WhatsApp</span>
+        <span class="yn-wa-tooltip">WhatsApp: +91 60005 95647</span>
     </a>
 
     <!-- Bootstrap JS Bundle -->

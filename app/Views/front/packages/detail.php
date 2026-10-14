@@ -177,8 +177,13 @@
                 <div class="alert alert-warning small">
                     <i class="bi bi-calendar-x me-1"></i> No upcoming departures currently open for online booking. Please contact our support team.
                 </div>
-                <a href="<?= whatsapp_url('Hi YatraNest, I would like to enquire about custom departure dates for package: ' . $package['title'] . ' (' . url('/packages/' . $package['slug']) . ')') ?>" target="_blank" rel="noopener" class="btn yn-btn-whatsapp w-100 py-2 fw-bold mb-2">
-                    <i class="bi bi-whatsapp me-1"></i> WhatsApp Custom Enquiry
+                <a href="<?= whatsapp_url('Hi YatraNest, I would like to enquire about custom departure dates for package: ' . $package['title'] . ' (' . url('/packages/' . $package['slug']) . ')') ?>" 
+                   target="_blank" 
+                   rel="noopener" 
+                   class="btn yn-btn-whatsapp w-100 py-2 fw-bold mb-2"
+                   style="background-color: #25D366; color: #ffffff; border-color: #25D366;"
+                   title="WhatsApp: +91 60005 95647">
+                    <i class="bi bi-whatsapp me-1"></i> WhatsApp Custom Enquiry (+91 60005 95647)
                 </a>
                 <a href="<?= url('/contact') ?>" class="btn yn-btn-outline w-100">Enquire for Custom Dates</a>
                 <?php else: ?>
@@ -250,8 +255,10 @@
                        target="_blank" 
                        rel="noopener" 
                        class="btn yn-btn-whatsapp w-100 py-2 fw-bold mb-2"
+                       style="background-color: #25D366; color: #ffffff; border-color: #25D366;"
+                       title="Direct WhatsApp: +91 60005 95647"
                        id="whatsappDirectBtn">
-                        <i class="bi bi-whatsapp fs-6 me-1"></i> Direct WhatsApp Enquiry
+                        <i class="bi bi-whatsapp fs-6 me-1"></i> WhatsApp Booking (+91 60005 95647)
                     </a>
                 </form>
 

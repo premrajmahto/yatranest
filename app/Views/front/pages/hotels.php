@@ -76,8 +76,16 @@
                     <label class="form-label small fw-semibold text-dark">Your Requirement *</label>
                     <textarea name="message" class="form-control" rows="3" required placeholder="Specify preferred destination, check-in/out dates, hotel category (3-star, 4-star, 5-star), and number of rooms..."></textarea>
                 </div>
-                <div class="col-12">
+                <div class="col-12 d-flex flex-wrap align-items-center gap-2">
                     <button type="submit" class="btn yn-btn-primary px-4">Submit Hotel Concierge Request</button>
+                    <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about hotel reservations and stays.') ?>" 
+                       target="_blank" 
+                       rel="noopener" 
+                       class="btn btn-outline-success px-4" 
+                       style="border-color: #25D366; color: #1ebe5d;"
+                       title="WhatsApp: +91 60005 95647">
+                        <i class="bi bi-whatsapp me-1"></i> WhatsApp Concierge (+91 60005 95647)
+                    </a>
                 </div>
             </div>
         </form>

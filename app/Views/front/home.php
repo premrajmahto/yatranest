@@ -51,6 +51,17 @@
                 </div>
             </form>
         </div>
+
+        <!-- Instant WhatsApp Assistance Pill -->
+        <div class="mt-3 text-center">
+            <a href="<?= whatsapp_url('Hi YatraNest, I would like customized travel recommendations.') ?>" 
+               target="_blank" 
+               rel="noopener" 
+               class="badge bg-dark bg-opacity-50 text-white text-decoration-none px-3 py-2 rounded-pill border border-white border-opacity-25"
+               title="WhatsApp: +91 60005 95647">
+                <i class="bi bi-whatsapp text-success me-1"></i> Need instant itinerary help? Chat on WhatsApp: <strong>+91 60005 95647</strong>
+            </a>
+        </div>
     </div>
 </section>
 

@@ -41,6 +41,17 @@ $user = auth()->user();
             </ul>
 
             <div class="d-flex align-items-center gap-2">
+                <a href="<?= whatsapp_url('Hi YatraNest, I would like to enquire about travel packages and bookings.') ?>" 
+                   target="_blank" 
+                   rel="noopener" 
+                   class="btn btn-sm btn-outline-success d-inline-flex align-items-center gap-1 fw-bold px-2 py-1" 
+                   style="border-color: #25D366; color: #1ebe5d;"
+                   title="Direct WhatsApp: +91 60005 95647" 
+                   aria-label="Direct WhatsApp Contact">
+                    <i class="bi bi-whatsapp fs-6 text-success"></i>
+                    <span class="d-none d-xl-inline small">+91 60005 95647</span>
+                    <span class="d-xl-none small">WhatsApp</span>
+                </a>
                 <?php if ($user): ?>
                     <?php if (auth()->isAdmin()): ?>
                         <a href="<?= url('/admin') ?>" class="btn btn-sm btn-outline-secondary me-2">

@@ -107,7 +107,7 @@ class Database {
                     self::$instance->exec("
                         UPDATE site_settings 
                         SET setting_value = '+91 60005 95647' 
-                        WHERE setting_key = 'company_phone' AND (setting_value LIKE '%98765%' OR setting_value = '');
+                        WHERE setting_key IN ('company_phone', 'company_whatsapp');
                         UPDATE site_settings 
                         SET setting_value = 'yatranest18@gmail.com' 
                         WHERE setting_key = 'company_email' AND (setting_value LIKE '%yatranest.com%' OR setting_value = '');
@@ -120,12 +120,6 @@ class Database {
                         self::$instance->exec("
                             INSERT INTO site_settings (setting_key, setting_value, setting_group, description) 
                             VALUES ('company_whatsapp', '+91 60005 95647', 'general', 'Official WhatsApp Number (Direct Contact)')
-                        ");
-                    } else {
-                        self::$instance->exec("
-                            UPDATE site_settings 
-                            SET setting_value = '+91 60005 95647' 
-                            WHERE setting_key = 'company_whatsapp' AND (setting_value LIKE '%98765%' OR setting_value = '')
                         ");
                     }
                 } catch (\Throwable $contactEx) {}

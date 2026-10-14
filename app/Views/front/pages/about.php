@@ -37,4 +37,20 @@
             <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80" alt="Travel Team" class="w-100 rounded-4 shadow object-fit-cover" style="height: 400px;">
         </div>
     </div>
+
+    <!-- WhatsApp Direct Help Banner -->
+    <div class="p-4 p-md-5 rounded-4 text-white text-center shadow" style="background: linear-gradient(135deg, #0d233a 0%, #008080 100%);">
+        <h3 class="fw-bold mb-2">Speak Directly With Our Destination Specialists</h3>
+        <p class="text-white-50 mx-auto mb-4" style="max-width: 650px;">
+            Planning a custom tour or traveling in a private group? Get personal guidance and handcrafted itineraries via WhatsApp.
+        </p>
+        <a href="<?= whatsapp_url('Hi YatraNest, I would like to speak with a destination specialist.') ?>" 
+           target="_blank" 
+           rel="noopener" 
+           class="btn btn-success btn-lg fw-bold px-4"
+           style="background-color: #25D366; border-color: #25D366;"
+           title="WhatsApp: +91 60005 95647">
+            <i class="bi bi-whatsapp me-2"></i> Chat on WhatsApp (+91 60005 95647)
+        </a>
+    </div>
 </div>

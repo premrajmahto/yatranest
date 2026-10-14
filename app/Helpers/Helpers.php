@@ -151,17 +151,21 @@ if (!function_exists('whatsapp_phone')) {
                 $settingModel = new \App\Models\SiteSetting();
                 $phone = $settingModel->get('company_whatsapp');
                 if (empty($phone)) {
-                    $phone = $settingModel->get('company_phone', '916000595647');
+                    $phone = $settingModel->get('company_phone');
                 }
             } catch (\Throwable $e) {
                 $phone = '916000595647';
             }
         }
+        if (empty($phone)) {
+            $phone = '916000595647';
+        }
         $digits = preg_replace('/[^0-9]/', '', (string)$phone);
+        $digits = ltrim($digits, '0');
         if (strlen($digits) === 10) {
             $digits = '91' . $digits;
         }
-        return !empty($digits) ? $digits : '916000595647';
+        return (!empty($digits) && strlen($digits) >= 10) ? $digits : '916000595647';
     }
 }
 
