@@ -90,7 +90,8 @@ function initTravelerForm() {
 
 function initReviewsSlider() {
     const track = document.getElementById('reviewsSliderTrack');
-    if (!track) return;
+    if (!track || track.dataset.sliderInitialized) return;
+    track.dataset.sliderInitialized = 'true';
 
     const slides = track.querySelectorAll('.yn-reviews-slide');
     if (!slides.length) return;
@@ -116,11 +117,18 @@ function initReviewsSlider() {
         if (!dotsContainer) return;
         dotsContainer.innerHTML = '';
         const maxIdx = getMaxIndex();
+        if (maxIdx <= 0) {
+            dotsContainer.style.display = 'none';
+            return;
+        }
+        dotsContainer.style.display = 'flex';
         for (let i = 0; i <= maxIdx; i++) {
             const dot = document.createElement('button');
+            dot.type = 'button';
             dot.className = 'yn-slider-dot' + (i === currentIndex ? ' active' : '');
             dot.setAttribute('aria-label', 'Go to review slide ' + (i + 1));
-            dot.addEventListener('click', () => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
                 goToSlide(i);
                 restartAutoplay();
             });
@@ -138,9 +146,15 @@ function initReviewsSlider() {
             currentIndex = index;
         }
 
-        const visibleCount = getVisibleCount();
-        const percentPerSlide = 100 / visibleCount;
-        track.style.transform = `translateX(-${currentIndex * percentPerSlide}%)`;
+        const slide = slides[0];
+        const slideWidth = slide ? slide.getBoundingClientRect().width : 0;
+        if (slideWidth > 0) {
+            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+        } else {
+            const visibleCount = getVisibleCount();
+            const percentPerSlide = 100 / visibleCount;
+            track.style.transform = `translateX(-${currentIndex * percentPerSlide}%)`;
+        }
 
         if (dotsContainer) {
             const dots = dotsContainer.querySelectorAll('.yn-slider-dot');

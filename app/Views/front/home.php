@@ -254,6 +254,88 @@
 </section>
 
 <!-- Customer Reviews Section -->
+<style>
+.yn-reviews-carousel-wrapper {
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    padding: 10px 0 20px 0 !important;
+}
+.yn-reviews-track {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1) !important;
+    will-change: transform;
+    width: 100% !important;
+}
+.yn-reviews-slide {
+    flex: 0 0 33.333333% !important;
+    max-width: 33.333333% !important;
+    width: 33.333333% !important;
+    padding: 0 12px !important;
+    box-sizing: border-box !important;
+}
+@media (max-width: 991.98px) {
+    .yn-reviews-slide {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        width: 50% !important;
+    }
+}
+@media (max-width: 575.98px) {
+    .yn-reviews-slide {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+}
+.yn-slider-btn {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    border: 1.5px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    color: #0d233a !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+    padding: 0 !important;
+    outline: none !important;
+}
+.yn-slider-btn:hover {
+    background: #008080 !important;
+    border-color: #008080 !important;
+    color: #ffffff !important;
+    transform: scale(1.08) !important;
+    box-shadow: 0 4px 14px rgba(0, 128, 128, 0.3) !important;
+}
+.yn-slider-dots {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-top: 25px !important;
+}
+.yn-slider-dot {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background-color: #cbd5e1 !important;
+    border: none !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+.yn-slider-dot.active {
+    background-color: #ff6b35 !important;
+    width: 26px !important;
+    border-radius: 12px !important;
+}
+</style>
+
 <section class="py-5 bg-white position-relative overflow-hidden">
     <div class="container">
         <div class="d-flex flex-wrap justify-content-between align-items-end mb-4">
@@ -263,10 +345,10 @@
             </div>
             <!-- Slider Controls -->
             <div class="d-flex gap-2 mt-3 mt-md-0">
-                <button type="button" class="yn-slider-btn yn-slider-prev" aria-label="Previous Reviews" title="Previous Reviews">
+                <button type="button" class="yn-slider-btn yn-slider-prev" aria-label="Previous Reviews" title="Previous Reviews" style="width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid #cbd5e1; background: #fff; color: #0d233a; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
                     <i class="bi bi-chevron-left fs-5"></i>
                 </button>
-                <button type="button" class="yn-slider-btn yn-slider-next" aria-label="Next Reviews" title="Next Reviews">
+                <button type="button" class="yn-slider-btn yn-slider-next" aria-label="Next Reviews" title="Next Reviews" style="width: 42px; height: 42px; border-radius: 50%; border: 1.5px solid #cbd5e1; background: #fff; color: #0d233a; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;">
                     <i class="bi bi-chevron-right fs-5"></i>
                 </button>
             </div>
@@ -278,8 +360,8 @@
             <p>Authentic reviews from verified travelers will be published here shortly.</p>
         </div>
         <?php else: ?>
-        <div class="yn-reviews-carousel-wrapper">
-            <div class="yn-reviews-track" id="reviewsSliderTrack">
+        <div class="yn-reviews-carousel-wrapper" style="overflow: hidden; position: relative; width: 100%; padding: 10px 0 20px 0;">
+            <div class="yn-reviews-track" id="reviewsSliderTrack" style="display: flex; flex-direction: row; flex-wrap: nowrap; transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; width: 100%;">
                 <?php foreach ($reviews as $rev): ?>
                 <?php 
                     $revTitle = $rev['review_title'] ?? $rev['title'] ?? 'Wonderful Experience';
@@ -288,7 +370,7 @@
                     $rating = (int)($rev['rating'] ?? 5);
                     $initial = strtoupper(substr($userName, 0, 1));
                 ?>
-                <div class="yn-reviews-slide">
+                <div class="yn-reviews-slide flex-shrink-0" style="padding: 0 12px; box-sizing: border-box;">
                     <div class="card p-4 rounded-4 border-0 shadow-sm h-100 bg-white d-flex flex-column" style="border: 1px solid var(--yn-gray-200) !important;">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="text-warning">
@@ -323,3 +405,176 @@
         <?php endif; ?>
     </div>
 </section>
+
+<script>
+(function() {
+    function setupReviewsSlider() {
+        var track = document.getElementById('reviewsSliderTrack');
+        if (!track || track.dataset.sliderInitialized) return;
+        track.dataset.sliderInitialized = 'true';
+
+        var slides = track.querySelectorAll('.yn-reviews-slide');
+        if (!slides || !slides.length) return;
+
+        var prevBtn = document.querySelector('.yn-slider-prev');
+        var nextBtn = document.querySelector('.yn-slider-next');
+        var dotsContainer = document.getElementById('reviewsSliderDots');
+
+        var currentIndex = 0;
+        var autoplayTimer = null;
+
+        function getVisibleCount() {
+            if (window.innerWidth < 576) return 1;
+            if (window.innerWidth < 992) return 2;
+            return 3;
+        }
+
+        function getMaxIndex() {
+            return Math.max(0, slides.length - getVisibleCount());
+        }
+
+        function updateDots() {
+            if (!dotsContainer) return;
+            dotsContainer.innerHTML = '';
+            var maxIdx = getMaxIndex();
+            if (maxIdx <= 0) {
+                dotsContainer.style.display = 'none';
+                return;
+            }
+            dotsContainer.style.display = 'flex';
+            for (var i = 0; i <= maxIdx; i++) {
+                (function(idx) {
+                    var dot = document.createElement('button');
+                    dot.type = 'button';
+                    dot.className = 'yn-slider-dot' + (idx === currentIndex ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Go to review slide ' + (idx + 1));
+                    dot.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        goToSlide(idx);
+                        restartAutoplay();
+                    });
+                    dotsContainer.appendChild(dot);
+                })(i);
+            }
+        }
+
+        function goToSlide(index) {
+            var maxIdx = getMaxIndex();
+            if (index < 0) {
+                currentIndex = maxIdx;
+            } else if (index > maxIdx) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+
+            var slide = slides[0];
+            var slideWidth = slide ? slide.getBoundingClientRect().width : 0;
+            if (slideWidth > 0) {
+                track.style.transform = 'translateX(-' + (currentIndex * slideWidth) + 'px)';
+            } else {
+                var visible = getVisibleCount();
+                track.style.transform = 'translateX(-' + (currentIndex * (100 / visible)) + '%)';
+            }
+
+            if (dotsContainer) {
+                var dots = dotsContainer.querySelectorAll('.yn-slider-dot');
+                dots.forEach(function(d, idx) {
+                    d.classList.toggle('active', idx === currentIndex);
+                });
+            }
+        }
+
+        function nextSlide() {
+            goToSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            goToSlide(currentIndex - 1);
+        }
+
+        if (nextBtn) {
+            nextBtn.onclick = function(e) {
+                e.preventDefault();
+                nextSlide();
+                restartAutoplay();
+            };
+        }
+
+        if (prevBtn) {
+            prevBtn.onclick = function(e) {
+                e.preventDefault();
+                prevSlide();
+                restartAutoplay();
+            };
+        }
+
+        // Touch support (swipe)
+        var touchStartX = 0;
+        var touchEndX = 0;
+
+        track.addEventListener('touchstart', function(e) {
+            if (e.touches && e.touches[0]) {
+                touchStartX = e.touches[0].clientX;
+            }
+            stopAutoplay();
+        }, { passive: true });
+
+        track.addEventListener('touchend', function(e) {
+            if (e.changedTouches && e.changedTouches[0]) {
+                touchEndX = e.changedTouches[0].clientX;
+            }
+            var diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 40) {
+                if (diff > 0) nextSlide();
+                else prevSlide();
+            }
+            restartAutoplay();
+        }, { passive: true });
+
+        // Autoplay with hover pause
+        function startAutoplay() {
+            stopAutoplay();
+            if (slides.length > getVisibleCount()) {
+                autoplayTimer = setInterval(nextSlide, 4500);
+            }
+        }
+
+        function stopAutoplay() {
+            if (autoplayTimer) {
+                clearInterval(autoplayTimer);
+                autoplayTimer = null;
+            }
+        }
+
+        function restartAutoplay() {
+            stopAutoplay();
+            startAutoplay();
+        }
+
+        var wrapper = track.closest('.yn-reviews-carousel-wrapper');
+        if (wrapper) {
+            wrapper.addEventListener('mouseenter', stopAutoplay);
+            wrapper.addEventListener('mouseleave', startAutoplay);
+        }
+
+        window.addEventListener('resize', function() {
+            var maxIdx = getMaxIndex();
+            if (currentIndex > maxIdx) currentIndex = maxIdx;
+            updateDots();
+            goToSlide(currentIndex);
+        });
+
+        // Initialize display
+        updateDots();
+        goToSlide(0);
+        startAutoplay();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupReviewsSlider);
+    } else {
+        setupReviewsSlider();
+    }
+})();
+</script>
