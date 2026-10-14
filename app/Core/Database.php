@@ -18,6 +18,7 @@ class Database {
                 if (!str_starts_with($dbPath, '/') && !preg_match('/^[a-zA-Z]:/', $dbPath)) {
                     $dbPath = dirname(__DIR__, 2) . '/' . $dbPath;
                 }
+                $needSeed = !file_exists($dbPath) || filesize($dbPath) < 1000;
                 if (!file_exists($dbPath)) {
                     @mkdir(dirname($dbPath), 0777, true);
                     touch($dbPath);
@@ -25,23 +26,28 @@ class Database {
                 self::$instance = new PDO("sqlite:" . $dbPath);
                 self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-                self::$instance->sqliteCreateFunction('NOW', fn() => date('Y-m-d H:i:s'));
+                SqliteSeeder::registerFunctions(self::$instance);
+                if ($needSeed) {
+                    SqliteSeeder::seed(self::$instance);
+                } else {
+                    SqliteSeeder::checkAndRepairSchema(self::$instance);
+                }
                 return self::$instance;
             }
 
             $dsn = sprintf(
                 "mysql:host=%s;port=%d;dbname=%s;charset=%s",
-                $config['host'],
-                $config['port'],
-                $config['database'],
+                $config['host'] ?? '127.0.0.1',
+                $config['port'] ?? 3306,
+                $config['database'] ?? 'yatranest_db',
                 $config['charset'] ?? 'utf8mb4'
             );
 
             try {
                 self::$instance = new PDO(
                     $dsn,
-                    $config['username'],
-                    $config['password'],
+                    $config['username'] ?? 'root',
+                    $config['password'] ?? '',
                     $config['options'] ?? [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -68,10 +74,12 @@ class Database {
                     self::$instance = new PDO("sqlite:" . $sqlitePath);
                     self::$instance->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     self::$instance->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-                    self::$instance->sqliteCreateFunction('NOW', fn() => date('Y-m-d H:i:s'));
+                    SqliteSeeder::registerFunctions(self::$instance);
 
                     if ($needSeed) {
                         SqliteSeeder::seed(self::$instance);
+                    } else {
+                        SqliteSeeder::checkAndRepairSchema(self::$instance);
                     }
 
                     return self::$instance;

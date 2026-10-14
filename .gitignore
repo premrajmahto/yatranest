@@ -9,6 +9,8 @@ composer.phar
 /storage/logs/*.log
 /storage/cache/*
 /storage/invoices/*
+/storage/*.sqlite
+*.sqlite
 !/storage/logs/.gitkeep
 !/storage/cache/.gitkeep
 !/storage/invoices/.gitkeep

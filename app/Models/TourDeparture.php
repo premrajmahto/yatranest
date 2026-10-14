@@ -28,7 +28,9 @@ class TourDeparture extends Model {
     }
 
     public function findWithLock(int $id): ?array {
-        $sql = "SELECT * FROM tour_departures WHERE id = :id FOR UPDATE";
+        $driver = $this->getDb()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $lock = ($driver === 'sqlite') ? '' : ' FOR UPDATE';
+        $sql = "SELECT * FROM tour_departures WHERE id = :id" . $lock;
         $stmt = $this->getDb()->prepare($sql);
         $stmt->execute([':id' => $id]);
         $row = $stmt->fetch();

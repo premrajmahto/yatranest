@@ -5,6 +5,7 @@ namespace App\Core;
 use PDO;
 use PDOException;
 
+class SetupHandler {
     public static function handle(PDOException $e, array $config): void {
         self::renderInstaller($e, $config);
     }
