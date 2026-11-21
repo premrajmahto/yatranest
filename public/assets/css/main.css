@@ -611,4 +611,116 @@ body {
   border-radius: 12px;
 }
 
+/* Quick Booking Popup Modal */
+.yn-booking-modal .modal-content {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(13, 35, 58, 0.25);
+}
+
+.yn-booking-modal-header {
+  background: linear-gradient(135deg, #0d233a 0%, #008080 100%);
+  color: #ffffff;
+  padding: 1.25rem 1.5rem;
+  border-bottom: none;
+}
+
+.yn-booking-modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  opacity: 0.85;
+}
+
+.yn-booking-modal-header .btn-close:hover {
+  opacity: 1;
+}
+
+.yn-booking-preview-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.2s ease;
+}
+
+.yn-booking-preview-card img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.yn-stepper-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.yn-stepper-btn {
+  background: #f1f5f9;
+  border: none;
+  width: 40px;
+  height: 38px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.yn-stepper-btn:hover:not(:disabled) {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.yn-stepper-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.yn-stepper-input {
+  border: none;
+  text-align: center;
+  font-weight: 700;
+  width: 50px;
+  font-size: 1rem;
+  color: #0f172a;
+  background: transparent;
+}
+
+.yn-stepper-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.yn-estimate-box {
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.yn-guarantee-pill {
+  font-size: 0.78rem;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+
 

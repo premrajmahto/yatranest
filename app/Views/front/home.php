@@ -52,14 +52,21 @@
             </form>
         </div>
 
-        <!-- Instant WhatsApp Assistance Pill -->
-        <div class="mt-3 text-center">
+        <!-- Instant Booking CTA & WhatsApp Assistance Pill -->
+        <div class="mt-4 text-center d-flex flex-wrap justify-content-center align-items-center gap-2">
+            <button type="button" 
+                    class="btn btn-warning fw-bold px-4 py-2 rounded-pill shadow-sm d-inline-flex align-items-center gap-2 btn-open-booking-modal"
+                    data-package-id=""
+                    title="Quick Book Holiday Packages">
+                <i class="bi bi-lightning-charge-fill text-dark"></i>
+                <span class="text-dark">Quick Book a Holiday</span>
+            </button>
             <a href="<?= whatsapp_url('Hi YatraNest, I would like customized travel recommendations.') ?>" 
                target="_blank" 
                rel="noopener" 
-               class="badge bg-dark bg-opacity-50 text-white text-decoration-none px-3 py-2 rounded-pill border border-white border-opacity-25"
+               class="badge bg-dark bg-opacity-50 text-white text-decoration-none px-3 py-2 rounded-pill border border-white border-opacity-25 d-inline-flex align-items-center"
                title="WhatsApp: +91 60005 95647">
-                <i class="bi bi-whatsapp text-success me-1"></i> Need instant itinerary help? Chat on WhatsApp: <strong>+91 60005 95647</strong>
+                <i class="bi bi-whatsapp text-success me-1"></i> Need instant help? Chat: <strong>+91 60005 95647</strong>
             </a>
         </div>
     </div>
@@ -179,9 +186,15 @@
                                    aria-label="Direct WhatsApp Contact">
                                     <i class="bi bi-whatsapp"></i>
                                 </a>
-                                <a href="<?= url('/packages/' . $pkg['slug']) ?>" class="btn yn-btn-primary btn-sm px-3">
-                                    View Details
+                                <a href="<?= url('/packages/' . $pkg['slug']) ?>" class="btn yn-btn-outline btn-sm px-2 px-md-3" title="View Detailed Itinerary">
+                                    Details
                                 </a>
+                                <button type="button" 
+                                        class="btn yn-btn-primary btn-sm px-2 px-md-3 btn-open-booking-modal"
+                                        data-package-id="<?= $pkg['id'] ?>"
+                                        title="Book <?= e($pkg['title']) ?>">
+                                    <i class="bi bi-lightning-charge-fill me-1"></i>Book
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -202,9 +215,12 @@
                     <h2 class="display-6 fw-bold mb-2">Save 10% on Your First Holiday Booking</h2>
                     <p class="lead mb-0 text-white-50">Apply coupon code <strong class="text-warning bg-dark px-2 py-1 rounded">WELCOME10</strong> at checkout and enjoy up to ₹2,500 instant discount on all packages.</p>
                 </div>
-                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                    <a href="<?= url('/packages') ?>" class="btn btn-warning btn-lg fw-bold px-4 text-dark">
-                        Claim Your Discount <i class="bi bi-ticket-perforated ms-1"></i>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0 d-flex flex-wrap justify-content-lg-end gap-2">
+                    <button type="button" class="btn btn-warning btn-lg fw-bold px-4 text-dark shadow btn-open-booking-modal" data-package-id="">
+                        Book with WELCOME10 <i class="bi bi-ticket-perforated ms-1"></i>
+                    </button>
+                    <a href="<?= url('/packages') ?>" class="btn btn-outline-light btn-lg px-3">
+                        Explore
                     </a>
                 </div>
             </div>
@@ -589,3 +605,478 @@
     }
 })();
 </script>
+
+<!-- Embedded Data for Instant Booking Modal -->
+<script id="ynPackagesData" type="application/json"><?= json_encode($packages_map ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?></script>
+<script id="ynDeparturesData" type="application/json"><?= json_encode($departures_by_package ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?></script>
+
+<!-- Quick Booking Popup Modal -->
+<div class="modal fade yn-booking-modal" id="quickBookingModal" tabindex="-1" aria-labelledby="quickBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header yn-booking-modal-header text-white d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-warning text-dark rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-calendar2-check-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0 text-white" id="quickBookingModalLabel">Quick Tour Booking</h5>
+                        <small class="text-white-50">15-minute seat hold protection & transparent pricing</small>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4">
+                <form id="quickBookingForm" action="<?= url('/booking/checkout') ?>" method="GET">
+                    <!-- Step 1: Package Selector -->
+                    <div class="mb-3">
+                        <label for="quickBookingPackageSelect" class="form-label fw-bold text-dark small d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-compass text-teal me-1"></i> 1. Select Tour Package *</span>
+                            <span class="badge bg-light text-muted fw-normal border" id="packageCountBadge"><?= count($all_packages ?? []) ?> Packages Available</span>
+                        </label>
+                        <select name="package_id" id="quickBookingPackageSelect" class="form-select form-select-lg fw-semibold" required>
+                            <?php foreach (($all_packages ?? []) as $pkg): ?>
+                            <option value="<?= $pkg['id'] ?>">
+                                <?= $pkg['is_domestic'] ? '🇮🇳 [Domestic]' : '✈️ [Intl]' ?> <?= e($pkg['title']) ?> &mdash; From <?= format_currency($pkg['price_adult']) ?>
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <!-- Package Live Preview Card -->
+                    <div class="yn-booking-preview-card mb-4" id="packagePreviewCard">
+                        <img src="" alt="Package Thumbnail" id="previewPkgImage">
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                                <span class="badge bg-secondary-subtle text-secondary small" id="previewPkgDest">Destination</span>
+                                <span class="badge bg-primary-subtle text-primary small" id="previewPkgDuration">Duration</span>
+                            </div>
+                            <h6 class="fw-bold text-dark text-truncate mb-1" id="previewPkgTitle">Package Title</h6>
+                            <div class="small text-muted">
+                                Base Adult Price: <strong class="text-danger" id="previewPkgAdultRate">₹0</strong>
+                                &bull; Child: <span class="text-muted" id="previewPkgChildRate">₹0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Departure Date Selector -->
+                    <div class="mb-4">
+                        <label for="quickBookingDepartureSelect" class="form-label fw-bold text-dark small d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-calendar-event text-primary me-1"></i> 2. Choose Departure Date *</span>
+                            <span id="depLiveStatus" class="small fw-semibold text-success"></span>
+                        </label>
+                        <select name="departure_id" id="quickBookingDepartureSelect" class="form-select form-select-lg" required>
+                            <!-- Populated dynamically by JavaScript -->
+                        </select>
+
+                        <!-- Alert if no departure open -->
+                        <div id="noDeparturesAlert" class="alert alert-warning mt-2 d-none py-2 px-3 small">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                <div>
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                    <span>No online scheduled departures open for this package right now.</span>
+                                </div>
+                                <a href="#" id="customDateWhatsAppBtn" target="_blank" rel="noopener" class="btn btn-sm btn-success fw-bold">
+                                    <i class="bi bi-whatsapp me-1"></i> Request Custom Date
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Over-capacity seat notice -->
+                        <div id="overCapacityAlert" class="alert alert-danger mt-2 d-none py-2 px-3 small">
+                            <i class="bi bi-person-x-fill me-1"></i>
+                            <span id="overCapacityMessage">Selected travelers exceed available seats.</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Travelers Count -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-dark small mb-2">
+                            <i class="bi bi-people text-warning me-1"></i> 3. Select Travelers
+                        </label>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <div class="fw-bold small text-dark">Adults</div>
+                                            <div class="text-muted" style="font-size: 0.72rem;">12+ years</div>
+                                        </div>
+                                        <div class="yn-stepper-group">
+                                            <button type="button" class="yn-stepper-btn" id="adultMinusBtn" aria-label="Decrease Adults">&minus;</button>
+                                            <input type="number" name="adult_count" id="quickAdultCount" class="yn-stepper-input" value="2" min="1" max="20" readonly>
+                                            <button type="button" class="yn-stepper-btn" id="adultPlusBtn" aria-label="Increase Adults">&plus;</button>
+                                        </div>
+                                    </div>
+                                    <div class="text-end small text-muted" id="adultFareSubtitle">2 × ₹0</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <div class="fw-bold small text-dark">Children</div>
+                                            <div class="text-muted" style="font-size: 0.72rem;">2-11 years</div>
+                                        </div>
+                                        <div class="yn-stepper-group">
+                                            <button type="button" class="yn-stepper-btn" id="childMinusBtn" aria-label="Decrease Children">&minus;</button>
+                                            <input type="number" name="child_count" id="quickChildCount" class="yn-stepper-input" value="0" min="0" max="10" readonly>
+                                            <button type="button" class="yn-stepper-btn" id="childPlusBtn" aria-label="Increase Children">&plus;</button>
+                                        </div>
+                                    </div>
+                                    <div class="text-end small text-muted" id="childFareSubtitle">0 × ₹0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Live Estimate Breakdown -->
+                    <div class="yn-estimate-box mb-3">
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span class="text-muted">Subtotal (Fare):</span>
+                            <span class="fw-semibold text-dark" id="calcSubtotal">₹0</span>
+                        </div>
+                        <div class="d-flex justify-content-between small mb-1">
+                            <span class="text-muted">Taxes & Govt GST (5%):</span>
+                            <span class="text-muted" id="calcGst">₹0</span>
+                        </div>
+                        <hr class="my-2 text-muted">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-bold text-dark fs-6">Estimated Total</div>
+                                <small class="text-muted" style="font-size: 0.72rem;">All inclusive &bull; No hidden charges</small>
+                            </div>
+                            <div class="text-end">
+                                <div class="fs-4 fw-extrabold text-danger" id="calcGrandTotal">₹0</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 pt-2 border-top border-light-subtle d-flex align-items-center gap-2 small text-success fw-semibold">
+                            <i class="bi bi-tag-fill"></i>
+                            <span>Use coupon <code class="text-dark bg-warning-subtle px-2 py-0.5 rounded fw-bold">WELCOME10</code> at checkout for up to ₹2,500 off!</span>
+                        </div>
+                    </div>
+
+                    <!-- Trust & Guarantee Badges -->
+                    <div class="d-flex flex-wrap gap-2 justify-content-center pt-1 mb-2">
+                        <span class="yn-guarantee-pill"><i class="bi bi-shield-check text-success"></i> 15-Min Guaranteed Hold</span>
+                        <span class="yn-guarantee-pill"><i class="bi bi-credit-card-2-front text-primary"></i> Razorpay & Pay Later</span>
+                        <span class="yn-guarantee-pill"><i class="bi bi-headset text-warning"></i> 24/7 Concierge Support</span>
+                    </div>
+
+                    <div class="modal-footer px-0 pb-0 pt-3 border-top d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <a href="#" id="modalDirectWhatsApp" target="_blank" rel="noopener" class="text-success text-decoration-none small fw-semibold d-inline-flex align-items-center gap-1">
+                            <i class="bi bi-whatsapp fs-6"></i> Chat with Tour Specialist
+                        </a>
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" id="quickBookingSubmitBtn" class="btn yn-btn-primary px-4 py-2 fw-bold d-inline-flex align-items-center gap-2">
+                                <span>Proceed to Checkout</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Booking Modal JavaScript -->
+<script>
+(function() {
+    'use strict';
+
+    function initQuickBooking() {
+        var modalEl = document.getElementById('quickBookingModal');
+        if (!modalEl) return;
+
+        var packagesDataEl = document.getElementById('ynPackagesData');
+        var departuresDataEl = document.getElementById('ynDeparturesData');
+        var packagesMap = {};
+        var departuresByPkg = {};
+
+        try {
+            if (packagesDataEl) packagesMap = JSON.parse(packagesDataEl.textContent || '{}');
+            if (departuresDataEl) departuresByPkg = JSON.parse(departuresDataEl.textContent || '{}');
+        } catch (e) {
+            console.error('Error parsing booking data:', e);
+        }
+
+        var pkgSelect = document.getElementById('quickBookingPackageSelect');
+        var depSelect = document.getElementById('quickBookingDepartureSelect');
+        var adultInput = document.getElementById('quickAdultCount');
+        var childInput = document.getElementById('quickChildCount');
+        var adultMinusBtn = document.getElementById('adultMinusBtn');
+        var adultPlusBtn = document.getElementById('adultPlusBtn');
+        var childMinusBtn = document.getElementById('childMinusBtn');
+        var childPlusBtn = document.getElementById('childPlusBtn');
+        var adultFareSubtitle = document.getElementById('adultFareSubtitle');
+        var childFareSubtitle = document.getElementById('childFareSubtitle');
+        var calcSubtotal = document.getElementById('calcSubtotal');
+        var calcGst = document.getElementById('calcGst');
+        var calcGrandTotal = document.getElementById('calcGrandTotal');
+        var depLiveStatus = document.getElementById('depLiveStatus');
+        var noDeparturesAlert = document.getElementById('noDeparturesAlert');
+        var overCapacityAlert = document.getElementById('overCapacityAlert');
+        var overCapacityMessage = document.getElementById('overCapacityMessage');
+        var customDateWhatsAppBtn = document.getElementById('customDateWhatsAppBtn');
+        var modalDirectWhatsApp = document.getElementById('modalDirectWhatsApp');
+        var submitBtn = document.getElementById('quickBookingSubmitBtn');
+
+        var previewImage = document.getElementById('previewPkgImage');
+        var previewTitle = document.getElementById('previewPkgTitle');
+        var previewDest = document.getElementById('previewPkgDest');
+        var previewDuration = document.getElementById('previewPkgDuration');
+        var previewAdultRate = document.getElementById('previewPkgAdultRate');
+        var previewChildRate = document.getElementById('previewPkgChildRate');
+
+        var modalInstance = null;
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            modalInstance = bootstrap.Modal.getOrCreateInstance(modalEl);
+        }
+
+        function formatINR(val) {
+            return '₹' + Math.round(val).toLocaleString('en-IN');
+        }
+
+        function getSelectedPackage() {
+            var pkgId = pkgSelect.value;
+            return packagesMap[pkgId] || null;
+        }
+
+        function getSelectedDeparture() {
+            var selectedOption = depSelect.options[depSelect.selectedIndex];
+            if (!selectedOption || !selectedOption.value) return null;
+            return {
+                id: parseInt(selectedOption.value, 10),
+                available_seats: parseInt(selectedOption.getAttribute('data-available') || '0', 10),
+                adult_price: parseFloat(selectedOption.getAttribute('data-adult-price') || '0'),
+                child_price: parseFloat(selectedOption.getAttribute('data-child-price') || '0'),
+                date_text: selectedOption.getAttribute('data-date-text') || ''
+            };
+        }
+
+        function updatePackagePreview() {
+            var pkg = getSelectedPackage();
+            if (!pkg) return;
+
+            if (previewImage) previewImage.src = pkg.featured_image || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=300';
+            if (previewTitle) previewTitle.textContent = pkg.title;
+            if (previewDest) previewDest.textContent = pkg.destination_name || (pkg.is_domestic ? 'Domestic' : 'International');
+            if (previewDuration) previewDuration.textContent = pkg.duration_days + 'D / ' + pkg.duration_nights + 'N';
+            if (previewAdultRate) previewAdultRate.textContent = formatINR(pkg.price_adult);
+            if (previewChildRate) previewChildRate.textContent = formatINR(pkg.price_child);
+        }
+
+        function populateDepartures() {
+            var pkgId = pkgSelect.value;
+            var departures = departuresByPkg[pkgId] || [];
+
+            depSelect.innerHTML = '';
+            overCapacityAlert.classList.add('d-none');
+
+            if (departures.length === 0) {
+                depSelect.classList.add('d-none');
+                noDeparturesAlert.classList.remove('d-none');
+                depLiveStatus.textContent = '';
+                submitBtn.disabled = true;
+
+                var pkg = getSelectedPackage();
+                var waMsg = encodeURIComponent('Hi YatraNest, I would like to inquire about customized travel dates for: ' + (pkg ? pkg.title : 'this tour'));
+                customDateWhatsAppBtn.href = 'https://api.whatsapp.com/send?phone=916000595647&text=' + waMsg;
+                return;
+            }
+
+            depSelect.classList.remove('d-none');
+            noDeparturesAlert.classList.add('d-none');
+            submitBtn.disabled = false;
+
+            var defaultSelected = false;
+            departures.forEach(function(dep, idx) {
+                var opt = document.createElement('option');
+                opt.value = dep.id;
+                opt.setAttribute('data-available', dep.available_seats);
+                opt.setAttribute('data-adult-price', dep.adult_price !== null ? dep.adult_price : (packagesMap[pkgId] ? packagesMap[pkgId].price_adult : 0));
+                opt.setAttribute('data-child-price', dep.child_price !== null ? dep.child_price : (packagesMap[pkgId] ? packagesMap[pkgId].price_child : 0));
+                opt.setAttribute('data-date-text', dep.formatted_date);
+
+                if (dep.available_seats <= 0) {
+                    opt.disabled = true;
+                    opt.textContent = '📅 ' + dep.formatted_date + ' [SOLD OUT]';
+                } else {
+                    opt.textContent = '📅 ' + dep.formatted_date + ' (' + dep.available_seats + ' seats available)';
+                    if (!defaultSelected) {
+                        opt.selected = true;
+                        defaultSelected = true;
+                    }
+                }
+                depSelect.appendChild(opt);
+            });
+
+            if (!defaultSelected && depSelect.options.length > 0) {
+                depSelect.options[0].selected = true;
+            }
+        }
+
+        function recalculate() {
+            var pkg = getSelectedPackage();
+            var dep = getSelectedDeparture();
+
+            var adults = parseInt(adultInput.value, 10) || 1;
+            var children = parseInt(childInput.value, 10) || 0;
+
+            // Enforce bounds
+            if (adults < 1) adults = 1;
+            if (adults > 20) adults = 20;
+            if (children < 0) children = 0;
+            if (children > 10) children = 10;
+
+            adultInput.value = adults;
+            childInput.value = children;
+
+            adultMinusBtn.disabled = (adults <= 1);
+            adultPlusBtn.disabled = (adults >= 20);
+            childMinusBtn.disabled = (children <= 0);
+            childPlusBtn.disabled = (children >= 10);
+
+            var adultPrice = (dep && dep.adult_price > 0) ? dep.adult_price : (pkg ? pkg.price_adult : 0);
+            var childPrice = (dep && dep.child_price > 0) ? dep.child_price : (pkg ? pkg.price_child : 0);
+
+            var adultTotal = adults * adultPrice;
+            var childTotal = children * childPrice;
+            var subtotal = adultTotal + childTotal;
+            var gst = subtotal * 0.05;
+            var grandTotal = subtotal + gst;
+
+            if (adultFareSubtitle) adultFareSubtitle.textContent = adults + ' × ' + formatINR(adultPrice) + ' = ' + formatINR(adultTotal);
+            if (childFareSubtitle) childFareSubtitle.textContent = children + ' × ' + formatINR(childPrice) + ' = ' + formatINR(childTotal);
+            if (calcSubtotal) calcSubtotal.textContent = formatINR(subtotal);
+            if (calcGst) calcGst.textContent = formatINR(gst);
+            if (calcGrandTotal) calcGrandTotal.textContent = formatINR(grandTotal);
+
+            // Check seat inventory capacity
+            if (dep) {
+                var totalPax = adults + children;
+                var seatsLeft = dep.available_seats;
+                depLiveStatus.textContent = seatsLeft + ' seats left on selected date';
+
+                if (totalPax > seatsLeft) {
+                    overCapacityAlert.classList.remove('d-none');
+                    overCapacityMessage.textContent = 'Only ' + seatsLeft + ' seat' + (seatsLeft === 1 ? '' : 's') + ' available on this date. Please adjust travelers (' + totalPax + ' selected) or pick another departure.';
+                    submitBtn.disabled = true;
+                } else {
+                    overCapacityAlert.classList.add('d-none');
+                    submitBtn.disabled = false;
+                }
+            } else {
+                depLiveStatus.textContent = '';
+            }
+
+            // Update WhatsApp Link
+            if (modalDirectWhatsApp && pkg) {
+                var dateText = dep ? dep.date_text : 'Upcoming departure';
+                var text = 'Hi YatraNest, I would like to book ' + pkg.title + ' on ' + dateText + ' for ' + adults + ' Adults' + (children > 0 ? ' & ' + children + ' Children' : '') + '. Est Total: ' + formatINR(grandTotal);
+                modalDirectWhatsApp.href = 'https://api.whatsapp.com/send?phone=916000595647&text=' + encodeURIComponent(text);
+            }
+        }
+
+        // Stepper Event Listeners
+        adultMinusBtn.addEventListener('click', function() {
+            var v = parseInt(adultInput.value, 10) || 1;
+            if (v > 1) {
+                adultInput.value = v - 1;
+                recalculate();
+            }
+        });
+
+        adultPlusBtn.addEventListener('click', function() {
+            var v = parseInt(adultInput.value, 10) || 1;
+            if (v < 20) {
+                adultInput.value = v + 1;
+                recalculate();
+            }
+        });
+
+        childMinusBtn.addEventListener('click', function() {
+            var v = parseInt(childInput.value, 10) || 0;
+            if (v > 0) {
+                childInput.value = v - 1;
+                recalculate();
+            }
+        });
+
+        childPlusBtn.addEventListener('click', function() {
+            var v = parseInt(childInput.value, 10) || 0;
+            if (v < 10) {
+                childInput.value = v + 1;
+                recalculate();
+            }
+        });
+
+        pkgSelect.addEventListener('change', function() {
+            updatePackagePreview();
+            populateDepartures();
+            recalculate();
+        });
+
+        depSelect.addEventListener('change', function() {
+            recalculate();
+        });
+
+        // Trigger Buttons click listener across the page
+        document.querySelectorAll('.btn-open-booking-modal').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var pkgId = this.getAttribute('data-package-id');
+
+                if (pkgId && packagesMap[pkgId]) {
+                    pkgSelect.value = pkgId;
+                } else if (pkgSelect.options.length > 0) {
+                    // Default to current or first
+                    if (!pkgSelect.value) {
+                        pkgSelect.selectedIndex = 0;
+                    }
+                }
+
+                updatePackagePreview();
+                populateDepartures();
+                recalculate();
+
+                if (modalInstance) {
+                    modalInstance.show();
+                } else if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    new bootstrap.Modal(modalEl).show();
+                }
+            });
+        });
+
+        // Initial setup for the first package
+        updatePackagePreview();
+        populateDepartures();
+        recalculate();
+
+        // Auto-open popup when website opens (1-second delay for smooth page render)
+        setTimeout(function() {
+            try {
+                if (modalInstance) {
+                    modalInstance.show();
+                } else if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    var m = bootstrap.Modal.getOrCreateInstance(modalEl);
+                    m.show();
+                }
+            } catch (err) {
+                console.warn('Auto-open modal error:', err);
+            }
+        }, 1000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initQuickBooking);
+    } else {
+        initQuickBooking();
+    }
+})();
+</script>
+
