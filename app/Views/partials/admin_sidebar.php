@@ -2,8 +2,8 @@
 $currentPath = $_SERVER['REQUEST_URI'] ?? '/admin';
 ?>
 <aside class="admin-sidebar" id="adminSidebar">
-    <a href="<?= url('/admin') ?>" class="admin-brand">
-        <i class="bi bi-airplane-engines text-warning fs-4"></i>
+    <a href="<?= url('/admin') ?>" class="admin-brand d-flex align-items-center gap-2">
+        <img src="<?= asset('images/logo.png') ?>" alt="YatraNest" height="34" class="bg-white p-1 rounded-2 shadow-sm" style="max-height: 34px; width: auto;">
         <span>YatraNest</span> Admin
     </a>
 

@@ -42,10 +42,19 @@ body {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 0;
 }
 
-.navbar-yn .navbar-brand span {
-  color: var(--yn-secondary);
+.yn-navbar-logo {
+  height: 50px;
+  width: auto;
+  max-height: 52px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.yn-navbar-logo:hover {
+  transform: scale(1.03);
 }
 
 .navbar-yn .nav-link {

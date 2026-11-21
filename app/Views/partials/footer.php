@@ -2,9 +2,10 @@
     <div class="container">
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <i class="bi bi-airplane-engines fs-2 text-warning"></i>
-                    <h4 class="m-0 text-white fw-bold">Yatra<span class="text-info">Nest</span></h4>
+                <div class="mb-3">
+                    <a href="<?= url('/') ?>" class="bg-white p-2 px-3 rounded-3 d-inline-block shadow-sm text-decoration-none" title="YatraNest Journeys">
+                        <img src="<?= asset('images/logo.png') ?>" alt="YatraNest Journeys" height="46" style="max-height: 46px; width: auto; display: block;">
+                    </a>
                 </div>
                 <p class="text-secondary small mb-4 pe-lg-4">
                     Your premier tour & travel booking partner. Crafting bespoke journeys, authentic cultural experiences, and unforgettable domestic and international holidays.

@@ -60,7 +60,9 @@ class InvoiceService {
                 <table class="header-table">
                     <tr>
                         <td>
-                            <div class="logo">Yatra<span>Nest</span></div>
+                            <div class="logo" style="margin-bottom: 8px;">
+                                <img src="<?= url('/assets/images/logo.png') ?>" alt="YatraNest Journeys" height="48" style="vertical-align: middle; max-height: 48px; width: auto;">
+                            </div>
                             <div style="color: #64748b; margin-top: 4px;"><?= htmlspecialchars($companyAddress) ?></div>
                             <div style="color: #64748b;">Phone: <?= htmlspecialchars($companyPhone) ?> | Email: <?= htmlspecialchars($companyEmail) ?></div>
                             <div style="color: #64748b;">GSTIN: <?= htmlspecialchars($companyGstin) ?></div>

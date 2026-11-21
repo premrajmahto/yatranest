@@ -14,9 +14,8 @@
 </head>
 <body class="bg-light d-flex flex-column min-vh-100 justify-content-between">
     <div class="py-4 text-center">
-        <a href="<?= url('/') ?>" class="d-inline-flex align-items-center gap-2 text-decoration-none text-dark fs-3 fw-bold">
-            <i class="bi bi-airplane-engines text-primary"></i>
-            Yatra<span class="text-secondary">Nest</span>
+        <a href="<?= url('/') ?>" class="d-inline-block text-decoration-none" title="YatraNest Journeys">
+            <img src="<?= asset('images/logo.png') ?>" alt="YatraNest Journeys" height="65" style="max-height: 65px; width: auto;">
         </a>
     </div>
 

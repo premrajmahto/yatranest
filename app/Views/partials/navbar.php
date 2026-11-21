@@ -4,9 +4,8 @@ $user = auth()->user();
 ?>
 <nav class="navbar navbar-expand-lg navbar-yn sticky-top py-3">
     <div class="container">
-        <a class="navbar-brand" href="<?= url('/') ?>">
-            <i class="bi bi-airplane-engines text-primary fs-3"></i>
-            Yatra<span>Nest</span>
+        <a class="navbar-brand py-0 d-flex align-items-center" href="<?= url('/') ?>" title="YatraNest Journeys">
+            <img src="<?= asset('images/logo.png') ?>" alt="YatraNest Journeys" height="50" class="yn-navbar-logo">
         </a>
 
         <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
