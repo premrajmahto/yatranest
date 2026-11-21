@@ -45,6 +45,7 @@ $router->get('/terms', [StaticPageController::class, 'terms']);
 $router->get('/cancellation-policy', [StaticPageController::class, 'cancellation']);
 $router->get('/contact', [ContactController::class, 'show']);
 $router->post('/contact/submit', [ContactController::class, 'submit'], [CsrfMiddleware::class]);
+$router->post('/travel-plan/request', [ContactController::class, 'requestPlan']);
 $router->get('/install', [InstallController::class, 'index']);
 $router->post('/install', [InstallController::class, 'setup']);
 

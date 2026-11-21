@@ -52,14 +52,13 @@
             </form>
         </div>
 
-        <!-- Instant Booking CTA & WhatsApp Assistance Pill -->
+        <!-- Instant Travel Plan & WhatsApp Assistance Pill -->
         <div class="mt-4 text-center d-flex flex-wrap justify-content-center align-items-center gap-2">
             <button type="button" 
-                    class="btn btn-warning fw-bold px-4 py-2 rounded-pill shadow-sm d-inline-flex align-items-center gap-2 btn-open-booking-modal"
-                    data-package-id=""
-                    title="Quick Book Holiday Packages">
-                <i class="bi bi-lightning-charge-fill text-dark"></i>
-                <span class="text-dark">Quick Book a Holiday</span>
+                    class="btn btn-warning fw-bold px-4 py-2 rounded-pill shadow-sm d-inline-flex align-items-center gap-2 btn-open-plan-modal"
+                    title="Request A Travel Plan">
+                <i class="bi bi-calendar2-heart-fill text-dark"></i>
+                <span class="text-dark">Plan My Holidays</span>
             </button>
             <a href="<?= whatsapp_url('Hi YatraNest, I would like customized travel recommendations.') ?>" 
                target="_blank" 
@@ -190,10 +189,12 @@
                                     Details
                                 </a>
                                 <button type="button" 
-                                        class="btn yn-btn-primary btn-sm px-2 px-md-3 btn-open-booking-modal"
+                                        class="btn yn-btn-primary btn-sm px-2 px-md-3 btn-open-plan-modal"
                                         data-package-id="<?= $pkg['id'] ?>"
-                                        title="Book <?= e($pkg['title']) ?>">
-                                    <i class="bi bi-lightning-charge-fill me-1"></i>Book
+                                        data-package-title="<?= e($pkg['title']) ?>"
+                                        data-package-dest="<?= e($pkg['destination_name']) ?>"
+                                        title="Request Travel Plan for <?= e($pkg['title']) ?>">
+                                    <i class="bi bi-calendar2-heart me-1"></i>Plan
                                 </button>
                             </div>
                         </div>
@@ -216,8 +217,8 @@
                     <p class="lead mb-0 text-white-50">Apply coupon code <strong class="text-warning bg-dark px-2 py-1 rounded">WELCOME10</strong> at checkout and enjoy up to ₹2,500 instant discount on all packages.</p>
                 </div>
                 <div class="col-lg-4 text-lg-end mt-4 mt-lg-0 d-flex flex-wrap justify-content-lg-end gap-2">
-                    <button type="button" class="btn btn-warning btn-lg fw-bold px-4 text-dark shadow btn-open-booking-modal" data-package-id="">
-                        Book with WELCOME10 <i class="bi bi-ticket-perforated ms-1"></i>
+                    <button type="button" class="btn btn-warning btn-lg fw-bold px-4 text-dark shadow btn-open-plan-modal" data-package-dest="Special Holiday Deal (WELCOME10)">
+                        Plan with WELCOME10 <i class="bi bi-ticket-perforated ms-1"></i>
                     </button>
                     <a href="<?= url('/packages') ?>" class="btn btn-outline-light btn-lg px-3">
                         Explore
@@ -609,6 +610,118 @@
 <!-- Embedded Data for Instant Booking Modal -->
 <script id="ynPackagesData" type="application/json"><?= json_encode($packages_map ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?></script>
 <script id="ynDeparturesData" type="application/json"><?= json_encode($departures_by_package ?? [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT) ?></script>
+
+<!-- Request A Travel Plan Modal (Matches uploaded screenshot) -->
+<div class="modal fade yn-plan-modal" id="requestTravelPlanModal" tabindex="-1" aria-labelledby="requestTravelPlanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            <!-- Form Container -->
+            <div id="travelPlanFormContainer">
+                <h3 class="yn-plan-title" id="requestTravelPlanModalLabel">Request A Travel Plan</h3>
+
+                <form id="travelPlanForm" method="POST" action="<?= url('/travel-plan/request') ?>">
+                    <?= csrf_field() ?>
+
+                    <!-- Name Field -->
+                    <div class="yn-plan-group">
+                        <div class="yn-plan-icon">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <input type="text" name="name" class="yn-plan-input" placeholder="Your Name *" required>
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="yn-plan-group">
+                        <div class="yn-plan-icon">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <input type="tel" name="phone" id="planPhoneInput" class="yn-plan-input" placeholder="+91" value="+91 " required>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="yn-plan-group">
+                        <div class="yn-plan-icon">
+                            <i class="bi bi-envelope-fill"></i>
+                        </div>
+                        <input type="email" name="email" class="yn-plan-input" placeholder="Email Id*" required>
+                    </div>
+
+                    <!-- Travel Destination Field -->
+                    <div class="yn-plan-group">
+                        <div class="yn-plan-icon">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <input type="text" name="destination" id="planDestinationInput" class="yn-plan-input" placeholder="Travel Destination*" list="travelDestList" required>
+                        <datalist id="travelDestList">
+                            <?php foreach (($destinations ?? []) as $d): ?>
+                            <option value="<?= e($d['name']) ?> (<?= e($d['country']) ?>)"></option>
+                            <?php endforeach; ?>
+                            <option value="Kashmir"></option>
+                            <option value="Kerala"></option>
+                            <option value="Himachal & Manali"></option>
+                            <option value="Goa"></option>
+                            <option value="Sikkim & Darjeeling"></option>
+                            <option value="Dubai"></option>
+                            <option value="Bali"></option>
+                            <option value="Thailand"></option>
+                            <option value="Rajasthan"></option>
+                        </datalist>
+                    </div>
+
+                    <!-- Current City Field -->
+                    <div class="yn-plan-group">
+                        <div class="yn-plan-icon">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <input type="text" name="current_city" class="yn-plan-input" placeholder="Your Current City Name*" required>
+                    </div>
+
+                    <!-- Travel Date Field -->
+                    <div class="yn-plan-group">
+                        <div class="yn-plan-icon">
+                            <i class="bi bi-calendar3"></i>
+                        </div>
+                        <input type="text" 
+                               name="travel_date" 
+                               id="planDateInput" 
+                               class="yn-plan-input" 
+                               placeholder="Travel Date*" 
+                               onfocus="(this.type='date'); try{this.showPicker();}catch(e){}" 
+                               onblur="if(!this.value){this.type='text';}" 
+                               min="<?= date('Y-m-d') ?>" 
+                               required>
+                    </div>
+
+                    <div id="planFormError" class="alert alert-danger py-2 px-3 small d-none mb-3"></div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="planSubmitBtn" class="yn-plan-btn">
+                        <span>Plan My Holidays</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Success Confirmation Screen -->
+            <div id="travelPlanSuccess" class="yn-plan-success d-none">
+                <div class="text-success mb-3">
+                    <i class="bi bi-check-circle-fill" style="font-size: 3.5rem;"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-2">Request Received!</h4>
+                <p class="text-muted small mb-3" id="planSuccessMessage">
+                    Thank you! Our holiday specialist is crafting your customized itinerary and will get in touch with you shortly.
+                </p>
+                <div class="d-flex flex-column gap-2 mt-4">
+                    <a href="#" id="planSuccessWhatsApp" target="_blank" rel="noopener" class="btn btn-success fw-bold py-2 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-whatsapp"></i> Chat on WhatsApp Now
+                    </a>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Quick Booking Popup Modal -->
 <div class="modal fade yn-booking-modal" id="quickBookingModal" tabindex="-1" aria-labelledby="quickBookingModalLabel" aria-hidden="true">
@@ -1056,26 +1169,159 @@
         updatePackagePreview();
         populateDepartures();
         recalculate();
+    }
 
-        // Auto-open popup when website opens (1-second delay for smooth page render)
+    // Initialize Request A Travel Plan Modal (Matches uploaded screenshot)
+    function initTravelPlanModal() {
+        var planModalEl = document.getElementById('requestTravelPlanModal');
+        if (!planModalEl) return;
+
+        var planForm = document.getElementById('travelPlanForm');
+        var planFormContainer = document.getElementById('travelPlanFormContainer');
+        var planSuccess = document.getElementById('travelPlanSuccess');
+        var planError = document.getElementById('planFormError');
+        var planSubmitBtn = document.getElementById('planSubmitBtn');
+        var planSuccessMsg = document.getElementById('planSuccessMessage');
+        var planSuccessWA = document.getElementById('planSuccessWhatsApp');
+        var phoneInput = document.getElementById('planPhoneInput');
+        var destInput = document.getElementById('planDestinationInput');
+
+        var planModalInstance = null;
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            planModalInstance = bootstrap.Modal.getOrCreateInstance(planModalEl);
+        }
+
+        // Phone input handling to keep +91 prefix intact
+        if (phoneInput) {
+            phoneInput.addEventListener('focus', function() {
+                if (!this.value || this.value.trim() === '') {
+                    this.value = '+91 ';
+                }
+            });
+            phoneInput.addEventListener('input', function() {
+                if (!this.value.startsWith('+91')) {
+                    var raw = this.value.replace(/^\+91\s*/, '').replace(/[^\d\s]/g, '');
+                    this.value = '+91 ' + raw;
+                }
+            });
+        }
+
+        // Handle buttons with .btn-open-plan-modal across the page
+        document.querySelectorAll('.btn-open-plan-modal').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var destName = this.getAttribute('data-package-dest') || this.getAttribute('data-package-title') || '';
+                if (destInput && destName) {
+                    destInput.value = destName;
+                }
+
+                // Reset view if already submitted previously
+                if (planFormContainer && planSuccess) {
+                    planFormContainer.classList.remove('d-none');
+                    planSuccess.classList.add('d-none');
+                }
+                if (planError) {
+                    planError.classList.add('d-none');
+                }
+
+                if (planModalInstance) {
+                    planModalInstance.show();
+                } else if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                    new bootstrap.Modal(planModalEl).show();
+                }
+            });
+        });
+
+        // AJAX Form Submission
+        if (planForm) {
+            planForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (planError) planError.classList.add('d-none');
+                if (planSubmitBtn) {
+                    planSubmitBtn.disabled = true;
+                    planSubmitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Submitting...';
+                }
+
+                var formData = new FormData(planForm);
+
+                fetch('<?= url('/travel-plan/request') ?>', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(data) {
+                    if (planSubmitBtn) {
+                        planSubmitBtn.disabled = false;
+                        planSubmitBtn.innerHTML = '<span>Plan My Holidays</span>';
+                    }
+
+                    if (data.success) {
+                        planFormContainer.classList.add('d-none');
+                        planSuccess.classList.remove('d-none');
+
+                        var name = data.data ? data.data.name : '';
+                        var dest = data.data ? data.data.destination : '';
+                        var phone = data.data ? data.data.phone : '';
+                        var city = data.data ? data.data.current_city : '';
+                        var date = data.data ? data.data.travel_date : '';
+
+                        if (planSuccessMsg) {
+                            planSuccessMsg.innerHTML = 'Thank you, <strong>' + (name || 'Traveler') + '</strong>! Your holiday request for <strong>' + (dest || 'your destination') + '</strong> has been received.<br><span class="text-muted small">Our holiday specialist is preparing your personalized itinerary and will contact you at <strong>' + (phone || '') + '</strong> shortly.</span>';
+                        }
+
+                        if (planSuccessWA) {
+                            var waText = 'Hi YatraNest, I just submitted a travel plan request for ' + dest + (city ? ' from ' + city : '') + (date ? ' on ' + date : '') + '. My name is ' + name + '.';
+                            planSuccessWA.href = 'https://api.whatsapp.com/send?phone=916000595647&text=' + encodeURIComponent(waText);
+                        }
+                    } else {
+                        if (planError) {
+                            planError.textContent = data.message || 'Please check all required fields and try again.';
+                            planError.classList.remove('d-none');
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Travel plan request error:', err);
+                    if (planSubmitBtn) {
+                        planSubmitBtn.disabled = false;
+                        planSubmitBtn.innerHTML = '<span>Plan My Holidays</span>';
+                    }
+                    if (planError) {
+                        planError.textContent = 'A network error occurred. Please try again or chat with our team on WhatsApp.';
+                        planError.classList.remove('d-none');
+                    }
+                });
+            });
+        }
+
+        // Auto-open Request A Travel Plan popup when website opens (1-second delay for smooth page render)
         setTimeout(function() {
             try {
-                if (modalInstance) {
-                    modalInstance.show();
+                if (planModalInstance) {
+                    planModalInstance.show();
                 } else if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-                    var m = bootstrap.Modal.getOrCreateInstance(modalEl);
+                    var m = bootstrap.Modal.getOrCreateInstance(planModalEl);
                     m.show();
                 }
             } catch (err) {
-                console.warn('Auto-open modal error:', err);
+                console.warn('Auto-open plan modal error:', err);
             }
         }, 1000);
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initQuickBooking);
+        document.addEventListener('DOMContentLoaded', function() {
+            initQuickBooking();
+            initTravelPlanModal();
+        });
     } else {
         initQuickBooking();
+        initTravelPlanModal();
     }
 })();
 </script>

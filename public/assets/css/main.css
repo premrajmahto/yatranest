@@ -731,5 +731,127 @@ body {
   border: 1px solid #e2e8f0;
 }
 
+/* ========================================================
+   Request A Travel Plan Modal (Matches uploaded screenshot)
+   ======================================================== */
+.yn-plan-modal .modal-dialog {
+  max-width: 410px;
+  margin: 1.75rem auto;
+}
+
+.yn-plan-modal .modal-content {
+  border: none;
+  border-radius: 8px;
+  background-color: #ffffff;
+  padding: 34px 26px 30px 26px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  position: relative;
+}
+
+.yn-plan-modal .btn-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  opacity: 0.55;
+  font-size: 0.85rem;
+}
+
+.yn-plan-modal .btn-close:hover {
+  opacity: 0.95;
+}
+
+.yn-plan-title {
+  color: #00868f;
+  font-weight: 700;
+  font-size: 1.55rem;
+  text-align: center;
+  margin-bottom: 22px;
+  letter-spacing: -0.2px;
+}
+
+.yn-plan-group {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  margin-bottom: 14px;
+  background-color: #ffffff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  height: 48px;
+  overflow: hidden;
+}
+
+.yn-plan-group:focus-within {
+  border-color: #00868f;
+  box-shadow: 0 0 0 3px rgba(0, 134, 143, 0.15);
+}
+
+.yn-plan-icon {
+  width: 48px;
+  background-color: #fbfcfd;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00868f;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.yn-plan-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0 14px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  outline: none;
+  height: 100%;
+}
+
+.yn-plan-input::placeholder {
+  color: #6b7280;
+  opacity: 0.85;
+  font-weight: 400;
+}
+
+.yn-plan-btn {
+  background-color: #00868f;
+  border: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.1rem;
+  height: 48px;
+  border-radius: 4px;
+  width: 100%;
+  margin-top: 6px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.yn-plan-btn:hover {
+  background-color: #006d77;
+  color: #ffffff;
+}
+
+.yn-plan-btn:active {
+  transform: scale(0.99);
+}
+
+.yn-plan-btn:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.yn-plan-success {
+  text-align: center;
+  padding: 10px 5px;
+}
+
+
 
 
