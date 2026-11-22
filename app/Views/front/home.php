@@ -172,12 +172,12 @@
 
                         <div class="d-flex justify-content-between align-items-center mt-auto">
                             <div>
-                                <span class="text-muted small d-block" style="font-size: 0.75rem;">Starting from</span>
-                                <span class="yn-price-tag"><?= format_currency($pkg['price_adult']) ?></span>
-                                <span class="text-muted small">/person</span>
+                                <span class="text-muted small d-block" style="font-size: 0.75rem;">Price</span>
+                                <span class="yn-price-tag btn-open-plan-modal" role="button" style="font-size: 1.05rem; cursor: pointer;" data-package-id="<?= $pkg['id'] ?>" data-package-title="<?= e($pkg['title']) ?>" data-package-dest="<?= e($pkg['destination_name']) ?>" title="Click to ask for price">Ask for Price</span>
+                                <span class="text-muted small d-block" style="font-size: 0.72rem;">On Request</span>
                             </div>
                             <div class="d-flex align-items-center gap-2">
-                                <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about the package: ' . $pkg['title'] . ' (Starting from ' . format_currency($pkg['price_adult']) . '). Website link: ' . url('/packages/' . $pkg['slug'])) ?>" 
+                                <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about the package: ' . $pkg['title'] . '. Website link: ' . url('/packages/' . $pkg['slug'])) ?>" 
                                    target="_blank" 
                                    rel="noopener" 
                                    class="yn-btn-whatsapp-icon" 

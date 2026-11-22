@@ -161,11 +161,12 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                 <div>
-                                    <span class="yn-price-tag"><?= format_currency($pkg['price_adult']) ?></span>
-                                    <span class="text-muted small">/pax</span>
+                                    <span class="text-muted small d-block" style="font-size: 0.75rem;">Price</span>
+                                    <span class="yn-price-tag" style="font-size: 1.05rem;">Ask for Price</span>
+                                    <span class="text-muted small d-block" style="font-size: 0.72rem;">On Request</span>
                                 </div>
                                 <div class="d-flex align-items-center gap-2">
-                                    <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about the package: ' . $pkg['title'] . ' (Starting from ' . format_currency($pkg['price_adult']) . '). Website link: ' . url('/packages/' . $pkg['slug'])) ?>" 
+                                    <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about the package: ' . $pkg['title'] . '. Website link: ' . url('/packages/' . $pkg['slug'])) ?>" 
                                        target="_blank" 
                                        rel="noopener" 
                                        class="yn-btn-whatsapp-icon" 
@@ -174,7 +175,7 @@
                                         <i class="bi bi-whatsapp"></i>
                                     </a>
                                     <a href="<?= url('/packages/' . $pkg['slug']) ?>" class="btn yn-btn-primary btn-sm">
-                                        Book Now
+                                        View Details
                                     </a>
                                 </div>
                             </div>

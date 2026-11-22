@@ -20,9 +20,9 @@
                 </div>
             </div>
             <div>
-                <span class="text-white-50 small d-block text-end">Price Per Adult</span>
-                <span class="fs-2 fw-extrabold text-warning"><?= format_currency($package['price_adult']) ?></span>
-                <span class="text-white-50 small"> + taxes</span>
+                <span class="text-white-50 small d-block text-end">Pricing</span>
+                <span class="fs-2 fw-extrabold text-warning">Ask for Price</span>
+                <span class="text-white-50 small d-block text-end">Customized Plan</span>
             </div>
         </div>
     </div>
@@ -251,14 +251,14 @@
                         <i class="bi bi-lightning-fill me-1"></i> Proceed to Book Now
                     </button>
 
-                    <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about booking: ' . $package['title'] . ' (Starting from ' . format_currency($package['price_adult']) . '). Website link: ' . url('/packages/' . $package['slug'])) ?>" 
+                    <a href="<?= whatsapp_url('Hi YatraNest, I would like to inquire about package: ' . $package['title'] . '. Website link: ' . url('/packages/' . $package['slug'])) ?>" 
                        target="_blank" 
                        rel="noopener" 
                        class="btn yn-btn-whatsapp w-100 py-2 fw-bold mb-2"
                        style="background-color: #25D366; color: #ffffff; border-color: #25D366;"
                        title="Direct WhatsApp: +91 60005 95647"
                        id="whatsappDirectBtn">
-                        <i class="bi bi-whatsapp fs-6 me-1"></i> WhatsApp Booking (+91 60005 95647)
+                        <i class="bi bi-whatsapp fs-6 me-1"></i> WhatsApp Inquiry (+91 60005 95647)
                     </a>
                 </form>
 
