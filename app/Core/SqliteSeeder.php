@@ -183,6 +183,14 @@ class SqliteSeeder {
             if (!empty($nlCols) && !in_array('is_active', $nlCols, true) && in_array('status', $nlCols, true)) {
                 $pdo->exec("ALTER TABLE newsletter_subscribers RENAME COLUMN status TO is_active");
             }
+
+            // 11. Repair & sync official contact settings
+            $pdo->exec("UPDATE site_settings SET setting_value = '+91 60005 95647' WHERE setting_key = 'company_phone' AND (setting_value LIKE '%98765%' OR setting_value LIKE '%12345%' OR setting_value = '')");
+            $pdo->exec("UPDATE site_settings SET setting_value = '+91 60005 95647' WHERE setting_key = 'company_whatsapp'");
+            $hasWa = $pdo->query("SELECT id FROM site_settings WHERE setting_key = 'company_whatsapp' LIMIT 1")->fetchColumn();
+            if (!$hasWa) {
+                $pdo->exec("INSERT INTO site_settings (setting_key, setting_value, setting_group, description) VALUES ('company_whatsapp', '+91 60005 95647', 'general', 'Official WhatsApp Number (Direct Contact)')");
+            }
         } catch (\Throwable $e) {
             Logger::error("SQLite auto-repair warning: " . $e->getMessage());
         }

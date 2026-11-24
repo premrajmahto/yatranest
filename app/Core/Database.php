@@ -32,6 +32,7 @@ class Database {
                 } else {
                     SqliteSeeder::checkAndRepairSchema(self::$instance);
                 }
+                self::syncOfficialContactSettings(self::$instance);
                 return self::$instance;
             }
 
@@ -103,26 +104,7 @@ class Database {
                 } catch (\Throwable $repairEx) {}
 
                 // Self-healing: Ensure updated contact details (phone, whatsapp, emails)
-                try {
-                    self::$instance->exec("
-                        UPDATE site_settings 
-                        SET setting_value = '+91 60005 95647' 
-                        WHERE setting_key IN ('company_phone', 'company_whatsapp');
-                        UPDATE site_settings 
-                        SET setting_value = 'yatranest18@gmail.com' 
-                        WHERE setting_key = 'company_email' AND (setting_value LIKE '%yatranest.com%' OR setting_value = '');
-                        UPDATE site_settings 
-                        SET setting_value = 'Guwahati, Assam, India' 
-                        WHERE setting_key = 'company_address' AND (setting_value LIKE '%Bengaluru%' OR setting_value = '' OR setting_value = 'Guwahati, India');
-                    ");
-                    $hasWa = self::$instance->query("SELECT id FROM site_settings WHERE setting_key = 'company_whatsapp' LIMIT 1")->fetchColumn();
-                    if (!$hasWa) {
-                        self::$instance->exec("
-                            INSERT INTO site_settings (setting_key, setting_value, setting_group, description) 
-                            VALUES ('company_whatsapp', '+91 60005 95647', 'general', 'Official WhatsApp Number (Direct Contact)')
-                        ");
-                    }
-                } catch (\Throwable $contactEx) {}
+                self::syncOfficialContactSettings(self::$instance);
             } catch (PDOException $e) {
                 Logger::error("MySQL connection failed: " . $e->getMessage() . " - Activating automatic SQLite fallback.");
 
@@ -145,6 +127,7 @@ class Database {
                     } else {
                         SqliteSeeder::checkAndRepairSchema(self::$instance);
                     }
+                    self::syncOfficialContactSettings(self::$instance);
 
                     return self::$instance;
                 } catch (\Throwable $fallbackEx) {
@@ -154,6 +137,20 @@ class Database {
             }
         }
         return self::$instance;
+    }
+
+    private static function syncOfficialContactSettings(PDO $pdo): void {
+        try {
+            $pdo->exec("UPDATE site_settings SET setting_value = '+91 60005 95647' WHERE setting_key = 'company_phone' AND (setting_value LIKE '%98765%' OR setting_value LIKE '%12345%' OR setting_value = '')");
+            $pdo->exec("UPDATE site_settings SET setting_value = '+91 60005 95647' WHERE setting_key = 'company_whatsapp'");
+            $pdo->exec("UPDATE site_settings SET setting_value = 'yatranest18@gmail.com' WHERE setting_key = 'company_email' AND (setting_value LIKE '%yatranest.com%' OR setting_value = '')");
+            $pdo->exec("UPDATE site_settings SET setting_value = 'Guwahati, Assam, India' WHERE setting_key = 'company_address' AND (setting_value LIKE '%Bengaluru%' OR setting_value = '' OR setting_value = 'Guwahati, India')");
+
+            $hasWa = $pdo->query("SELECT id FROM site_settings WHERE setting_key = 'company_whatsapp' LIMIT 1")->fetchColumn();
+            if (!$hasWa) {
+                $pdo->exec("INSERT INTO site_settings (setting_key, setting_value, setting_group, description) VALUES ('company_whatsapp', '+91 60005 95647', 'general', 'Official WhatsApp Number (Direct Contact)')");
+            }
+        } catch (\Throwable $e) {}
     }
 
     public static function beginTransaction(): bool {

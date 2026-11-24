@@ -146,26 +146,40 @@ if (!function_exists('view')) {
 
 if (!function_exists('whatsapp_phone')) {
     function whatsapp_phone(?string $phone = null): string {
-        if ($phone === null) {
-            try {
-                $settingModel = new \App\Models\SiteSetting();
-                $phone = $settingModel->get('company_whatsapp');
-                if (empty($phone)) {
-                    $phone = $settingModel->get('company_phone');
-                }
-            } catch (\Throwable $e) {
-                $phone = '916000595647';
+        $officialNumber = '916000595647';
+
+        if ($phone !== null && !empty($phone)) {
+            $digits = preg_replace('/[^0-9]/', '', (string)$phone);
+            $digits = ltrim($digits, '0');
+            if (strlen($digits) === 10) {
+                $digits = '91' . $digits;
+            }
+            if (!empty($digits) && strlen($digits) >= 10 && !str_contains($digits, '98765') && !str_contains($digits, '12345')) {
+                return $digits;
             }
         }
-        if (empty($phone)) {
-            $phone = '916000595647';
+
+        try {
+            $settingModel = new \App\Models\SiteSetting();
+            $val = $settingModel->get('company_whatsapp');
+            if (empty($val) || str_contains($val, '98765') || str_contains($val, '12345')) {
+                $val = $settingModel->get('company_phone');
+            }
+            if (!empty($val) && !str_contains($val, '98765') && !str_contains($val, '12345')) {
+                $digits = preg_replace('/[^0-9]/', '', (string)$val);
+                $digits = ltrim($digits, '0');
+                if (strlen($digits) === 10) {
+                    $digits = '91' . $digits;
+                }
+                if (!empty($digits) && strlen($digits) >= 10 && !str_contains($digits, '98765') && !str_contains($digits, '12345')) {
+                    return $digits;
+                }
+            }
+        } catch (\Throwable $e) {
+            // Database not reachable or table missing
         }
-        $digits = preg_replace('/[^0-9]/', '', (string)$phone);
-        $digits = ltrim($digits, '0');
-        if (strlen($digits) === 10) {
-            $digits = '91' . $digits;
-        }
-        return (!empty($digits) && strlen($digits) >= 10) ? $digits : '916000595647';
+
+        return $officialNumber;
     }
 }
 

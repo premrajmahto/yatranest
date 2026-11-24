@@ -10,6 +10,9 @@ class InvoiceService {
         $companyName = $settingModel->get('company_name', 'YatraNest Holidays Pvt Ltd');
         $companyAddress = $settingModel->get('company_address', 'Guwahati, Assam, India');
         $companyPhone = $settingModel->get('company_phone', '+91 60005 95647');
+        if (str_contains($companyPhone, '98765') || str_contains($companyPhone, '12345') || empty($companyPhone)) {
+            $companyPhone = '+91 60005 95647';
+        }
         $companyEmail = $settingModel->get('company_email', 'yatranest18@gmail.com');
         $companyGstin = $settingModel->get('company_gstin', '29ABCDE1234F1Z5');
 
